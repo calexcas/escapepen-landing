@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escapepen NeuroJoy®</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--void:#030308;--dark:#09090f;--card:#0d0d16;--gold:#C8A050;--gold-b:#EEC870;--gold-d:rgba(200,160,80,.12);--cream:#EDE5D4;--muted:#7A6E5E;--white:#F8F6F2;--bdr:rgba(200,160,80,.15);--bds:rgba(255,255,255,.06)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--void);color:var(--cream);font-family:'DM Sans',sans-serif;overflow-x:hidden;cursor:none}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--gold)}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");pointer-events:none;z-index:9990;opacity:.35}
+/* CURSOR */
+.cur{position:fixed;width:8px;height:8px;background:var(--gold-b);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference}
+.cur-r{position:fixed;width:36px;height:36px;border:1px solid rgba(200,160,80,.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .08s}
+/* PROGRESS */
+#prog{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--gold),var(--gold-b));transform-origin:left;transform:scaleX(0);z-index:1000}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content:space-between;align-items:center;padding:0 56px;height:68px;transition:background .3s,backdrop-filter .3s}
+nav.sc{background:rgba(3,3,8,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--bdr)}
+.n-logo{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gold-b);letter-spacing:.05em}
+.n-links{display:flex;gap:28px;list-style:none}
+.n-links a{font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s}
+.n-links a:hover{color:var(--gold-b)}
+.n-cta{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--void);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;padding:11px 24px;font-family:'DM Sans',sans-serif;cursor:none;position:relative;overflow:hidden;transition:transform .2s}
+.n-cta::after{content:'';position:absolute;inset:0;background:var(--gold-b);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.n-cta:hover::after{transform:scaleX(1)}
+.n-cta span{position:relative;z-index:1}
+/* HERO */
+#hero{position:relative;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;background:var(--void)}
+.h-bg1{position:absolute;right:-80px;top:50%;width:680px;height:680px;transform:translateY(-50%);background:radial-gradient(circle,rgba(200,160,80,.07) 0%,transparent 70%);pointer-events:none}
+.h-bg2{position:absolute;left:-80px;bottom:0;width:480px;height:480px;background:radial-gradient(circle,rgba(100,20,20,.07) 0%,transparent 70%);pointer-events:none}
+.h-left{display:flex;flex-direction:column;justify-content:center;padding:130px 52px 80px 72px;position:relative;z-index:2}
+.h-badge{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:32px;display:flex;align-items:center;gap:10px;opacity:0;animation:fup .7s .2s forwards}
+.h-badge::before{content:'';display:block;width:32px;height:1px;background:var(--gold)}
+.h-headline{margin-bottom:36px}
+.h-line{display:block;font-family:'Bebas Neue',sans-serif;font-size:clamp(70px,9vw,126px);line-height:.92;letter-spacing:.02em;color:var(--white);clip-path:inset(0 0 100% 0);animation:sup .85s cubic-bezier(.16,1,.3,1) forwards}
+.h-line:nth-child(1){animation-delay:.3s}
+.h-line:nth-child(2){animation-delay:.45s;padding-left:36px}
+.h-line:nth-child(3){animation-delay:.6s}
+.h-line .gold{color:var(--gold-b)}
+.h-line .strk{-webkit-text-stroke:1.5px var(--gold);color:transparent}
+@keyframes sup{to{clip-path:inset(0 0 0% 0)}}
+@keyframes fup{to{opacity:1;transform:none}}
+.h-sub{font-size:15px;color:var(--muted);line-height:1.8;max-width:420px;margin-bottom:44px;opacity:0;animation:fup .7s .9s forwards;font-weight:300}
+.h-sub strong{color:var(--cream);font-weight:500}
+.h-ctas{display:flex;align-items:center;gap:24px;margin-bottom:56px;opacity:0;animation:fup .7s 1.1s forwards}
+.btn-main{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--void);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;padding:18px 36px;font-family:'DM Sans',sans-serif;cursor:none;position:relative;overflow:hidden}
+.btn-main::after{content:'';position:absolute;inset:0;background:var(--gold-b);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.btn-main:hover::after{transform:scaleX(1)}
+.btn-main span{position:relative;z-index:1}
+.btn-ghost{font-size:12px;color:var(--muted);text-decoration:none;letter-spacing:.08em;border-bottom:1px solid rgba(122,110,94,.3);padding-bottom:2px;transition:color .2s,border-color .2s;cursor:none}
+.btn-ghost:hover{color:var(--gold-b);border-color:var(--gold-b)}
+.h-stats{display:flex;gap:40px;opacity:0;animation:fup .7s 1.3s forwards}
+.stat-div{width:1px;background:var(--bdr)}
+.stat{display:flex;flex-direction:column;gap:4px}
+.stat-n{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;color:var(--gold-b);line-height:1}
+.stat-l{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.h-right{display:flex;align-items:center;justify-content:center;z-index:2;opacity:0;animation:fup 1s .5s forwards;position:relative}
+#pw{transform-style:preserve-3d;transition:transform .15s ease-out;position:relative}
+.pen-aura{position:absolute;inset:-70px;border-radius:50%;background:radial-gradient(circle,rgba(200,160,80,.12) 0%,transparent 70%);animation:ap 4s ease-in-out infinite}
+.pen-ring{position:absolute;inset:-55px;border-radius:50%;border:1px solid rgba(200,160,80,.1);animation:rs 24s linear infinite}
+.pen-ring::before{content:'';position:absolute;top:-4px;left:50%;width:7px;height:7px;background:var(--gold);border-radius:50%;transform:translateX(-50%)}
+.pen-ring2{position:absolute;inset:-95px;border-radius:50%;border:1px solid rgba(200,160,80,.05);animation:rs 38s linear infinite reverse}
+@keyframes ap{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(1.18);opacity:.5}}
+@keyframes rs{to{transform:rotate(360deg)}}
+.pen-svg{animation:pf 5s ease-in-out infinite;filter:drop-shadow(0 24px 56px rgba(200,160,80,.22));display:block;position:relative;z-index:2}
+@keyframes pf{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-14px) rotate(-8deg)}}
+/* MARQUEE */
+.mq-wrap{overflow:hidden;background:var(--gold);padding:13px 0;position:relative;z-index:10}
+.mq-track{display:flex;animation:mq 22s linear infinite;width:max-content}
+.mq-item{white-space:nowrap;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:.1em;color:var(--void);padding:0 44px}
+.mq-item::after{content:'·';margin-left:44px;color:rgba(3,3,8,.3)}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* PAIN */
+#pain{padding:140px 0;background:var(--void)}
+.pain-hdr{padding:0 72px;margin-bottom:72px}
+.eyebrow{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600;display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.eyebrow::before{content:'';display:block;width:40px;height:1px;background:var(--gold)}
+.ttl-xl{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,6.5vw,96px);line-height:.93;color:var(--white);letter-spacing:.01em}
+.ttl-xl em{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold-b);font-weight:300}
+.pain-row{display:grid;grid-template-columns:100px 1fr 1fr;align-items:center;border-top:1px solid var(--bds);padding:38px 72px;position:relative;overflow:hidden;transition:background .3s;cursor:none}
+.pain-row::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(200,160,80,.04) 0%,transparent 60%);opacity:0;transition:opacity .35s}
+.pain-row:hover::before{opacity:1}
+.pain-row:last-child{border-bottom:1px solid var(--bds)}
+.p-num{font-size:42px;line-height:1}
+.p-ttl{font-family:'Bebas Neue',sans-serif;font-size:clamp(26px,3vw,50px);color:var(--white);letter-spacing:.02em;padding-right:32px}
+.p-desc{font-size:14px;color:var(--muted);line-height:1.75;font-weight:300;max-width:440px}
+.p-arr{position:absolute;right:72px;font-size:22px;color:var(--gold);opacity:0;transform:translateX(-12px);transition:all .3s}
+.pain-row:hover .p-arr{opacity:1;transform:translateX(0)}
+/* MANIFESTO */
+#mani{position:relative;min-height:90vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;background:var(--dark)}
+.mani-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(200,160,80,.07) 0%,transparent 70%);animation:ap 5s ease-in-out infinite}
+.mani-in{position:relative;z-index:2;max-width:960px;padding:80px 48px}
+.mani-pre{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:48px}
+.mani-q{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,5vw,68px);font-weight:300;color:var(--white);line-height:1.18;margin-bottom:48px}
+.mani-q em{color:var(--gold-b);font-style:italic}
+.mani-q strong{font-weight:600}
+.mani-line{width:1px;height:80px;background:linear-gradient(to bottom,var(--gold),transparent);margin:0 auto 48px}
+.mani-foot{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--muted);font-style:italic}
+.mani-foot strong{color:var(--cream);font-style:normal;font-weight:600}
+/* PRODUCT */
+#prod{padding:140px 0;background:var(--void)}
+.prod-in{display:grid;grid-template-columns:1fr 1fr;max-width:1200px;margin:0 auto;padding:0 72px;gap:80px;align-items:start}
+.prod-sticky{position:sticky;top:120px;display:flex;flex-direction:column;align-items:center;gap:28px}
+.prod-stage{position:relative;width:220px;height:500px;display:flex;align-items:center;justify-content:center}
+.prod-aura{position:absolute;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(200,160,80,.1) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);animation:ap 4s ease-in-out infinite}
+.prod-pen{position:relative;z-index:2;animation:pf 6s ease-in-out infinite;filter:drop-shadow(0 20px 48px rgba(200,160,80,.18))}
+.prod-lbl-name{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:var(--gold-b);letter-spacing:.07em;text-align:center}
+.prod-lbl-sub{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);text-align:center}
+.prod-content{display:flex;flex-direction:column;gap:48px}
+.prod-ttl{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,5vw,80px);line-height:.93;color:var(--white);letter-spacing:.02em}
+.prod-ttl span{color:var(--gold-b);display:block}
+.prod-desc{font-size:15px;color:var(--muted);line-height:1.8;font-weight:300;max-width:480px}
+.prod-desc strong{color:var(--cream);font-weight:500}
+.feat-list{display:flex;flex-direction:column}
+.feat{display:grid;grid-template-columns:52px 1fr;border-top:1px solid var(--bds);padding:26px 0;transition:background .3s;cursor:none}
+.feat:last-child{border-bottom:1px solid var(--bds)}
+.feat:hover{background:rgba(200,160,80,.015)}
+.feat-ic{width:32px;height:32px;border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-size:14px;background:rgba(200,160,80,.04);flex-shrink:0}
+.feat-txt h4{font-size:14px;font-weight:600;color:var(--white);margin-bottom:5px}
+.feat-txt p{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300}
+.anvisa-s{display:flex;align-items:center;gap:14px;padding:18px 22px;border:1px solid var(--bdr);background:rgba(200,160,80,.025)}
+.anvisa-t{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.08em;color:var(--gold)}
+.anvisa-div{width:1px;height:30px;background:var(--bdr)}
+.anvisa-i{font-size:11px;color:var(--muted);line-height:1.6}
+.anvisa-i strong{color:var(--cream);font-size:12px;font-weight:600;display:block}
+/* HOW */
+#how{padding:140px 72px;background:var(--dark);position:relative;overflow:hidden}
+#how::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(200,160,80,.04) 0%,transparent 70%)}
+.how-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:72px;position:relative;z-index:2}
+.how-step{padding:52px 44px;background:rgba(255,255,255,.01);border:1px solid var(--bds);transition:border-color .3s,background .3s;cursor:none}
+.how-step:hover{border-color:var(--bdr);background:rgba(200,160,80,.02)}
+.how-n{font-size:56px;line-height:1;margin-bottom:22px;display:block}
+.how-step h3{font-size:19px;font-weight:600;color:var(--white);margin-bottom:10px}
+.how-step p{font-size:14px;color:var(--muted);line-height:1.75;font-weight:300}
+.how-tag{display:inline-block;margin-top:22px;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--bdr);padding-bottom:4px}
+/* TESTIMONIALS */
+#testi{padding:140px 0;background:var(--void);overflow:hidden}
+.testi-hdr{padding:0 72px;margin-bottom:60px}
+.testi-track{display:flex;gap:20px;animation:tt 38s linear infinite;width:max-content;padding:0 20px}
+.testi-track:hover{animation-play-state:paused}
+@keyframes tt{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tc{width:370px;flex-shrink:0;background:var(--card);border:1px solid var(--bds);padding:38px 32px;position:relative;transition:border-color .3s}
+.tc:hover{border-color:var(--bdr)}
+.tc::before{content:'"';position:absolute;top:14px;right:22px;font-family:'Cormorant Garamond',serif;font-size:96px;color:rgba(200,160,80,.07);line-height:1}
+.tc-stars{color:var(--gold);font-size:13px;letter-spacing:3px;margin-bottom:18px}
+.tc-txt{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;font-weight:300;color:var(--cream);line-height:1.7;margin-bottom:26px}
+.tc-auth{display:flex;align-items:center;gap:12px}
+.tc-av{width:36px;height:36px;background:var(--gold-d);border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gold-b);flex-shrink:0}
+.tc-name{font-size:13px;font-weight:600;color:var(--white)}
+.tc-det{font-size:11px;color:var(--muted);margin-top:2px}
+.tc-tag{display:inline-block;margin-top:18px;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border:1px solid var(--bdr);padding:4px 10px}
+/* OFFER */
+#offer{background:var(--dark)}
+.offer-top{padding:80px 72px 60px;text-align:center;border-bottom:1px solid var(--bds)}
+.offer-badge{display:inline-flex;align-items:center;gap:14px;background:rgba(120,20,20,.22);border:1px solid rgba(192,57,43,.3);padding:8px 20px;margin-bottom:28px}
+.offer-badge span{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#e74c3c;font-weight:700}
+.offer-ttl{font-family:'Bebas Neue',sans-serif;font-size:clamp(58px,8vw,116px);line-height:.9;color:var(--white);letter-spacing:.02em;margin-bottom:22px}
+.offer-ttl em{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold-b)}
+.offer-sub{font-size:15px;color:var(--muted);max-width:580px;margin:0 auto;line-height:1.75;font-weight:300}
+.offer-sub strong{color:var(--cream);font-weight:500}
+.offer-body{display:grid;grid-template-columns:1fr 1fr;min-height:480px}
+.offer-vis{background:linear-gradient(135deg,rgba(200,160,80,.06) 0%,rgba(200,160,80,.02) 100%);border-right:1px solid var(--bds);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px;padding:60px}
+.offer-pen{animation:pf 5s ease-in-out infinite}
+.o-cd{display:flex}
+.o-cd-u{text-align:center;padding:16px 22px;border:1px solid var(--bdr);min-width:78px}
+.o-cd-u+.o-cd-u{border-left:none}
+.o-cd-n{font-family:'Bebas Neue',sans-serif;font-size:44px;color:var(--gold-b);line-height:1;display:block}
+.o-cd-l{font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:block;margin-top:4px}
+.offer-price{padding:60px;display:flex;flex-direction:column;justify-content:center;gap:28px}
+.p-from{font-size:16px;color:var(--muted);text-decoration:line-through}
+.p-now{font-family:'Cormorant Garamond',serif;font-size:78px;font-weight:300;color:var(--white);line-height:1}
+.p-now small{font-size:34px;color:var(--muted)}
+.p-lbl{font-size:12px;color:var(--gold);font-weight:600}
+.p-line{width:44px;height:1px;background:var(--gold-d)}
+.p-inst{font-size:15px;color:var(--muted)}
+.p-inst strong{color:var(--gold-b)}
+.o-perks{display:flex;flex-direction:column;gap:10px}
+.o-perk{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);font-weight:300}
+.o-perk::before{content:'';width:6px;height:6px;background:var(--gold);flex-shrink:0}
+.btn-buy{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--gold);color:var(--void);font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;padding:22px 36px;font-family:'DM Sans',sans-serif;cursor:none;position:relative;overflow:hidden}
+.btn-buy::after{content:'';position:absolute;inset:0;background:var(--gold-b);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.btn-buy:hover::after{transform:scaleX(1)}
+.btn-buy span{position:relative;z-index:1}
+.guar{display:flex;align-items:center;gap:14px;padding:18px 22px;border:1px solid var(--bds);background:rgba(255,255,255,.01);margin-top:4px}
+.guar-ic{font-size:22px;flex-shrink:0}
+.guar-b h5{font-size:13px;font-weight:600;color:var(--white)}
+.guar-b p{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.5;font-weight:300}
+/* FAQ */
+#faq{padding:140px 72px;background:var(--void);display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:start}
+.faq-l{position:sticky;top:120px}
+.faq-l-ttl{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,6vw,88px);line-height:.93;color:var(--white);margin-bottom:22px}
+.faq-l-sub{font-size:15px;color:var(--muted);line-height:1.7;font-weight:300;margin-bottom:36px}
+.faq-contact{display:flex;flex-direction:column;gap:12px}
+.faq-contact a{font-size:13px;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:8px;transition:color .2s;cursor:none}
+.faq-contact a:hover{color:var(--gold-b)}
+.faq-items{display:flex;flex-direction:column}
+.faq-item{border-top:1px solid var(--bds);overflow:hidden}
+.faq-item:last-child{border-bottom:1px solid var(--bds)}
+.faq-q{width:100%;background:none;border:none;color:var(--white);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;text-align:left;padding:26px 0;cursor:none;display:flex;justify-content:space-between;align-items:center;gap:18px;transition:color .2s}
+.faq-q:hover{color:var(--gold-b)}
+.faq-qi{width:28px;height:28px;border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px;color:var(--gold);transition:transform .3s,background .2s}
+.faq-item.open .faq-qi{transform:rotate(45deg);background:rgba(200,160,80,.08)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.faq-ai{padding:0 0 26px;font-size:14px;color:var(--muted);line-height:1.8;font-weight:300}
+.faq-item.open .faq-a{max-height:300px}
+/* FOOTER */
+footer{background:var(--dark);border-top:1px solid var(--bds)}
+.foot-in{display:grid;grid-template-columns:2fr 1fr 1fr;gap:56px;padding:72px 72px 44px}
+.foot-logo{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--gold-b);margin-bottom:14px;font-weight:300;letter-spacing:.04em}
+.foot-desc{font-size:13px;color:var(--muted);line-height:1.7;max-width:300px;font-weight:300;margin-bottom:22px}
+.foot-legal{font-size:10px;color:rgba(122,110,94,.38);line-height:1.7}
+.foot-col h5{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:22px;font-weight:600}
+.foot-col ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+.foot-col ul a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s;font-weight:300;cursor:none}
+.foot-col ul a:hover{color:var(--gold-b)}
+.foot-btm{padding:22px 72px;border-top:1px solid var(--bds);display:flex;justify-content:space-between;align-items:center}
+.foot-btm p{font-size:11px;color:rgba(122,110,94,.35)}
+/* ANIMATIONS */
+.reveal{clip-path:inset(0 0 100% 0);transition:clip-path .85s cubic-bezier(.16,1,.3,1)}
+.reveal.vis{clip-path:inset(0 0 0% 0)}
+.fup{opacity:0;transform:translateY(28px);transition:opacity .8s,transform .8s cubic-bezier(.16,1,.3,1)}
+.fup.vis{opacity:1;transform:translateY(0)}
+/* RESPONSIVE */
+@media(max-width:960px){
+  nav{padding:0 20px}.n-links{display:none}
+  #hero{grid-template-columns:1fr;min-height:auto}
+  .h-left{padding:120px 24px 60px}.h-right{display:none}
+  .pain-hdr,.pain-row{padding-left:24px;padding-right:24px}
+  .pain-row{grid-template-columns:60px 1fr}.p-desc{display:none}
+  #mani{min-height:auto;padding:0}.mani-in{padding:80px 24px}
+  .prod-in{grid-template-columns:1fr;padding:0 24px;gap:40px}.prod-sticky{display:none}
+  #how{padding:80px 24px}.how-steps{grid-template-columns:1fr}
+  .testi-hdr{padding:0 24px}
+  .offer-top{padding:60px 24px 40px}.offer-body{grid-template-columns:1fr}.offer-vis{display:none}.offer-price{padding:40px 24px}
+  #faq{grid-template-columns:1fr;padding:80px 24px;gap:48px}.faq-l{position:static}
+  .foot-in{grid-template-columns:1fr;padding:60px 24px 36px;gap:36px}.foot-btm{padding:18px 24px;flex-direction:column;gap:6px;text-align:center}
+}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+<div class="cur" id="cur"></div>
+<div class="cur-r" id="curR"></div>
+
+<nav id="nav">
+  <div class="n-logo">Escape<span style="font-weight:300;color:var(--cream)">pen</span><sup style="font-size:10px;color:var(--gold);vertical-align:super">®</sup></div>
+  <ul class="n-links">
+    <li><a href="#prod">Produto</a></li>
+    <li><a href="#how">Como funciona</a></li>
+    <li><a href="#testi">Depoimentos</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="#offer" class="n-cta"><span>Comprar agora</span></a>
+</nav>
+
+<section id="hero">
+  <div class="h-bg1"></div><div class="h-bg2"></div>
+  <div class="h-left">
+    <div class="h-badge">Aprovado pela ANVISA · 100% Natural · Frete grátis</div>
+    <h1 class="h-headline">
+      <span class="h-line">VOCÊ NÃO</span>
+      <span class="h-line"><span class="strk">É SEU</span></span>
+      <span class="h-line"><span class="gold">IMPULSO.</span></span>
+    </h1>
+    <p class="h-sub">A <strong>Escapepen NeuroJoy®</strong> cria a micro-pausa que separa você do seu piloto automático — antes que ele decida por você.</p>
+    <div class="h-ctas">
+      <a href="#offer" class="btn-main" id="hBtn"><span>→ Recuperar o Controle</span></a>
+      <a href="#how" class="btn-ghost">Como funciona</a>
+    </div>
+    <div class="h-stats">
+      <div class="stat"><span class="stat-n">+5k</span><span class="stat-l">Clientes</span></div>
+      <div class="stat-div"></div>
+      <div class="stat"><span class="stat-n">4.9★</span><span class="stat-l">Avaliação</span></div>
+      <div class="stat-div"></div>
+      <div class="stat"><span class="stat-n">7 dias</span><span class="stat-l">Garantia</span></div>
+    </div>
+  </div>
+  <div class="h-right">
+    <div id="pw">
+      <div class="pen-aura"></div>
+      <div class="pen-ring"></div>
+      <div class="pen-ring2"></div>
+      <svg class="pen-svg" width="150" height="530" viewBox="0 0 100 400" fill="none">
+        <defs>
+          <linearGradient id="gc" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#7A5020"/><stop offset="25%" stop-color="#D4A050"/><stop offset="50%" stop-color="#F0CC80"/><stop offset="75%" stop-color="#C8903C"/><stop offset="100%" stop-color="#6A4018"/></linearGradient>
+          <linearGradient id="gb" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#121218"/><stop offset="40%" stop-color="#1E1E2A"/><stop offset="60%" stop-color="#282838"/><stop offset="100%" stop-color="#0E0E16"/></linearGradient>
+          <linearGradient id="gbd" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#8A6020"/><stop offset="40%" stop-color="#EEC870"/><stop offset="60%" stop-color="#F0D080"/><stop offset="100%" stop-color="#8A6020"/></linearGradient>
+          <radialGradient id="gs" cx="25%" cy="50%" r="30%"><stop offset="0%" stop-color="rgba(255,255,255,.09)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/></radialGradient>
+        </defs>
+        <rect x="60" y="2" width="7" height="90" rx="3" fill="url(#gc)"/>
+        <rect x="18" y="0" width="64" height="18" rx="8" fill="url(#gc)"/>
+        <rect x="16" y="16" width="68" height="88" rx="4" fill="url(#gc)"/>
+        <rect x="22" y="16" width="13" height="88" rx="6" fill="url(#gs)"/>
+        <rect x="14" y="100" width="72" height="10" rx="1" fill="url(#gbd)"/>
+        <rect x="16" y="108" width="68" height="230" rx="2" fill="url(#gb)"/>
+        <rect x="20" y="108" width="10" height="228" rx="4" fill="url(#gs)"/>
+        <rect x="14" y="124" width="72" height="5" rx="1" fill="url(#gbd)"/>
+        <rect x="26" y="150" width="48" height="66" rx="2" fill="rgba(200,160,80,.05)"/>
+        <text x="50" y="172" text-anchor="middle" fill="rgba(200,160,80,.9)" font-size="5.5" letter-spacing="1.5" font-family="serif">ESCAPE</text>
+        <text x="50" y="186" text-anchor="middle" fill="rgba(200,160,80,.7)" font-size="7" letter-spacing="3" font-family="serif">pen</text>
+        <rect x="30" y="192" width="40" height=".5" fill="rgba(200,160,80,.3)"/>
+        <text x="50" y="204" text-anchor="middle" fill="rgba(200,160,80,.4)" font-size="3.5" letter-spacing="1" font-family="sans-serif">NeuroJoy®</text>
+        <rect x="14" y="238" width="72" height="2" rx=".5" fill="url(#gbd)" opacity=".4"/>
+        <rect x="14" y="328" width="72" height="12" rx="1" fill="url(#gbd)"/>
+        <rect x="16" y="338" width="68" height="20" rx="2" fill="url(#gc)"/>
+        <path d="M 25 358 Q 50 358 75 358 L 70 372 Q 50 378 30 372 Z" fill="url(#gc)"/>
+        <path d="M 33 372 Q 50 380 67 372 L 62 386 Q 50 392 38 386 Z" fill="url(#gbd)"/>
+        <ellipse cx="50" cy="394" rx="10" ry="5" fill="url(#gbd)"/>
+        <circle cx="50" cy="396" r="3" fill="rgba(240,200,112,.85)"/>
+        <rect x="76" y="108" width="4" height="226" rx="1" fill="rgba(255,255,255,.03)"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<div class="mq-wrap" aria-hidden="true">
+  <div class="mq-track">
+    <span class="mq-item">ESCAPE O IMPULSO</span><span class="mq-item">NEUROJOY®</span><span class="mq-item">APROVADO ANVISA</span><span class="mq-item">100% NATURAL</span><span class="mq-item">1 SEGUNDO MUDA TUDO</span><span class="mq-item">CONTROLE DE VOLTA</span>
+    <span class="mq-item">ESCAPE O IMPULSO</span><span class="mq-item">NEUROJOY®</span><span class="mq-item">APROVADO ANVISA</span><span class="mq-item">100% NATURAL</span><span class="mq-item">1 SEGUNDO MUDA TUDO</span><span class="mq-item">CONTROLE DE VOLTA</span>
+  </div>
+</div>
+
+<section id="pain">
+  <div class="pain-hdr">
+    <div class="eyebrow">O diagnóstico</div>
+    <h2 class="ttl-xl reveal">PEQUENOS IMPULSOS.<br><em>Grandes destruições.</em></h2>
+  </div>
+  <div>
+    <div class="pain-row"><span class="p-num">🍔</span><h3 class="p-ttl">COMER NO IMPULSO</h3><p class="p-desc">Não é fome. É um circuito mental disparado antes que você perceba. Você não decide — o impulso decide por você.</p><span class="p-arr">→</span></div>
+    <div class="pain-row"><span class="p-num">🚬</span><h3 class="p-ttl">FUMAR DE NOVO</h3><p class="p-desc">A nicotina acabou. O hábito neural ficou. E força de vontade não desmonta circuito neural — nunca funcionou assim.</p><span class="p-arr">→</span></div>
+    <div class="pain-row"><span class="p-num">📱</span><h3 class="p-ttl">PERDER HORAS EM TELAS</h3><p class="p-desc">Dopamina sequestrada por design. Você não escolheu scrollar — seu sistema de recompensa foi capturado por engenheiros de atenção.</p><span class="p-arr">→</span></div>
+    <div class="pain-row"><span class="p-num">😤</span><h3 class="p-ttl">REAGIR E SE ARREPENDER</h3><p class="p-desc">A raiva falou antes de você. O piloto automático age antes da parte racional aparecer — e você fica com o estrago.</p><span class="p-arr">→</span></div>
+    <div class="pain-row"><span class="p-num">🧊</span><h3 class="p-ttl">PARALISAR NA ANSIEDADE</h3><p class="p-desc">Não é preguiça. É ansiedade gerando esquiva. O impulso de evitar é tão poderoso quanto qualquer dependência física.</p><span class="p-arr">→</span></div>
+    <div class="pain-row"><span class="p-num">🎰</span><h3 class="p-ttl">CEDER ÀS APOSTAS</h3><p class="p-desc">A compulsão não pede licença. Aparece como urgência irracional — e a janela para recusar fecha em menos de um segundo.</p><span class="p-arr">→</span></div>
+  </div>
+</section>
+
+<section id="mani">
+  <div class="mani-glow"></div>
+  <div class="mani-in">
+    <span class="mani-pre fup">A verdade que ninguém te contou</span>
+    <h2 class="mani-q fup">Você não está fraco.<br>Você está enfrentando um circuito mental<br>com <em>força de vontade.</em><br><strong>É como parar um caminhão com as mãos.</strong></h2>
+    <div class="mani-line"></div>
+    <p class="mani-foot fup">Você nunca teve chance. <strong>Até agora.</strong></p>
+  </div>
+</section>
+
+<section id="prod">
+  <div class="prod-in">
+    <div class="prod-sticky">
+      <div class="prod-stage">
+        <div class="prod-aura"></div>
+        <svg class="prod-pen" width="180" height="530" viewBox="0 0 100 400" fill="none">
+          <use href="#gc"/><use href="#gb"/><use href="#gbd"/><use href="#gs"/>
+          <rect x="60" y="2" width="7" height="90" rx="3" fill="url(#gc)"/>
+          <rect x="18" y="0" width="64" height="18" rx="8" fill="url(#gc)"/>
+          <rect x="16" y="16" width="68" height="88" rx="4" fill="url(#gc)"/>
+          <rect x="22" y="16" width="13" height="88" rx="6" fill="url(#gs)"/>
+          <rect x="14" y="100" width="72" height="10" rx="1" fill="url(#gbd)"/>
+          <rect x="16" y="108" width="68" height="230" rx="2" fill="url(#gb)"/>
+          <rect x="20" y="108" width="10" height="228" rx="4" fill="url(#gs)"/>
+          <rect x="14" y="124" width="72" height="5" rx="1" fill="url(#gbd)"/>
+          <text x="50" y="200" text-anchor="middle" fill="rgba(200,160,80,.8)" font-size="5.5" letter-spacing="1.5" font-family="serif">ESCAPEPEN NeuroJoy®</text>
+          <rect x="14" y="238" width="72" height="2" rx=".5" fill="url(#gbd)" opacity=".4"/>
+          <rect x="14" y="328" width="72" height="12" rx="1" fill="url(#gbd)"/>
+          <rect x="16" y="338" width="68" height="20" rx="2" fill="url(#gc)"/>
+          <path d="M 25 358 Q 50 358 75 358 L 70 372 Q 50 378 30 372 Z" fill="url(#gc)"/>
+          <path d="M 33 372 Q 50 380 67 372 L 62 386 Q 50 392 38 386 Z" fill="url(#gbd)"/>
+          <ellipse cx="50" cy="394" rx="10" ry="5" fill="url(#gbd)"/>
+          <circle cx="50" cy="396" r="3" fill="rgba(240,200,112,.85)"/>
+        </svg>
+      </div>
+      <div class="prod-lbl-name">Escapepen NeuroJoy®</div>
+      <div class="prod-lbl-sub">Caneta Inaladora Aromática</div>
+    </div>
+    <div class="prod-content fup">
+      <div>
+        <div class="eyebrow">O dispositivo</div>
+        <h2 class="prod-ttl">O DISPOSITIVO<br><span>QUE INTERROMPE</span>O CIRCUITO</h2>
+        <p class="prod-desc" style="margin-top:20px">Uma caneta inaladora com <strong>compostos aromáticos terapêuticos 100% naturais</strong> que acessa o sistema límbico criando uma micro-pausa entre o gatilho e a ação — devolvendo o controle antes que o impulso vença.</p>
+      </div>
+      <div class="feat-list">
+        <div class="feat"><div style="padding-top:4px"><div class="feat-ic">⚡</div></div><div class="feat-txt"><h4>Age em 1 segundo</h4><p>Acessa o sistema límbico diretamente, quebrando o loop neural antes que o comportamento compulsivo se consolide.</p></div></div>
+        <div class="feat"><div style="padding-top:4px"><div class="feat-ic">🧠</div></div><div class="feat-txt"><h4>Reequilíbrio dopaminérgico natural</h4><p>Sem nicotina, sem química sintética. Estimula a produção natural de dopamina sem criar dependência.</p></div></div>
+        <div class="feat"><div style="padding-top:4px"><div class="feat-ic">🎯</div></div><div class="feat-txt"><h4>Discreto e sempre pronto</h4><p>Cabe no bolso. Sem configuração, sem recarga. Pronto no exato momento em que você precisa.</p></div></div>
+        <div class="feat"><div style="padding-top:4px"><div class="feat-ic">🌿</div></div><div class="feat-txt"><h4>100% natural, sem efeitos colaterais</h4><p>Compostos aromáticos certificados. Seguro para uso diário. Sem contraindicações para adultos saudáveis.</p></div></div>
+        <div class="feat"><div style="padding-top:4px"><div class="feat-ic">♾️</div></div><div class="feat-txt"><h4>Multifuncional por design</h4><p>Cigarro, comida, telas, raiva, apostas. Um dispositivo para qualquer padrão impulsivo.</p></div></div>
+      </div>
+      <div class="anvisa-s">
+        <div class="anvisa-t">ANVISA</div>
+        <div class="anvisa-div"></div>
+        <div class="anvisa-i"><strong>Produto regularizado e aprovado</strong>Proc. nº 25351046062202575 · CNPJ 40.235.691/0001-27</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="eyebrow fup">Como usar</div>
+  <h2 class="ttl-xl fup" style="margin-top:16px">TRÊS PASSOS.<br><em>Um segundo.</em></h2>
+  <div class="how-steps">
+    <div class="how-step fup" style="transition-delay:.0s"><span class="how-n">📦</span><h3>Abra a caixa</h3><p>Retire sua Escapepen. Ela já está pronta — sem configuração, sem ativação, sem espera.</p><span class="how-tag">Menos de 10 segundos</span></div>
+    <div class="how-step fup" style="transition-delay:.15s"><span class="how-n">✍️</span><h3>Pressione na tampa</h3><p>Posicione a ponta na tampa e pressione. O mecanismo de liberação aromática ativa instantaneamente.</p><span class="how-tag">Mecanismo preciso</span></div>
+    <div class="how-step fup" style="transition-delay:.3s"><span class="how-n">😮‍💨</span><h3>Inale e retome o controle</h3><p>Inale profundamente. Sinta a pausa instalar. O circuito perde força. Você volta a decidir.</p><span class="how-tag">Efeito imediato</span></div>
+  </div>
+</section>
+
+<section id="testi">
+  <div class="testi-hdr">
+    <div class="eyebrow">Quem já sentiu</div>
+    <h2 class="ttl-xl reveal">A VIDA DEPOIS<br><em>do impulso.</em></h2>
+  </div>
+  <div class="testi-track">
+    <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-txt">"Fumei por 11 anos. A Escapepen foi a primeira coisa que funcionou no momento certo — quando a vontade bate, não depois."</p><div class="tc-auth"><div class="tc-av">M</div><div><div class="tc-name">Marcela F.</div><div class="tc-det">São Paulo · Ex-fumante há 4 meses</div></div></div><span class="tc-tag">Cigarro</span></div>
+    <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-txt">"A ansiedade antes de reuniões era paralisante. Com a Escapepen, tenho 15 segundos de clareza que mudam tudo."</p><div class="tc-auth"><div class="tc-av">R</div><div><div class="tc-name">Rafael T.</div><div class="tc-det">Curitiba · Gestor comercial</div></div></div><span class="tc-tag">Ansiedade</span></div>
+    <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-txt">"Compulsão por doce desde adolescente. A Escapepen não me tirou o prazer — me devolveu o poder de escolher."</p><div class="tc-auth"><div class="tc-av">A</div><div><div class="tc-name">Ana Luíza M.</div><div class="tc-det">BH · Perdeu 8kg</div></div></div><span class="tc-tag">Alimentação</span></div>
+    <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-txt">"Brigava com minha filha toda semana. Hoje, quando sinto que vou explodir, uso a Escapepen. Já salvou nossa relação."</p><div class="tc-auth"><div class="tc-av">C</div><div><div class="tc-name">Carlos H.</div><div class="tc-det">Florianópolis · Pai de família</div></div></div><span class="tc-tag">Controle emocional</span></div>
+    <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-txt">"Estava perdendo dinheiro com apostas sem perceber. A caneta virou meu freio de emergência. Funcionou quando nada mais funcionou."</p><div class="tc-auth"><div class="tc-av">G</div><div><div class="tc-name">Gabriel S.</div><div class="tc-det">Porto Alegre · 5 meses em recuperação</div></div></div><span class="tc-tag">Apostas</span></div>
+    <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-txt">"Psicóloga há 8 anos. Comecei a recomendar a pacientes com compulsões leves. Os resultados me surpreenderam."</p><div class="tc-auth"><div class="tc-av">J</div><div><div class="tc-name">Juliana R.</div><div class="tc-det">Psicóloga CRP 06/185342</div></div></div><span class="tc-tag">Indicação profissional</span></div>
+    <!-- duplicate -->
+    <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-txt">"Fumei por 11 anos. A Escapepen foi a primeira coisa que funcionou no momento certo — quando a vontade bate, não depois."</p><div class="tc-auth"><div class="tc-av">M</div><div><div class="tc-name">Marcela F.</div><div class="tc-det">São Paulo · Ex-fumante há 4 meses</div></div></div><span class="tc-tag">Cigarro</span></div>
+    <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-txt">"A ansiedade antes de reuniões era paralisante. Com a Escapepen, tenho 15 segundos de clareza que mudam tudo."</p><div class="tc-auth"><div class="tc-av">R</div><div><div class="tc-name">Rafael T.</div><div class="tc-det">Curitiba · Gestor comercial</div></div></div><span class="tc-tag">Ansiedade</span></div>
+    <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-txt">"Compulsão por doce desde adolescente. A Escapepen não me tirou o prazer — me devolveu o poder de escolher."</p><div class="tc-auth"><div class="tc-av">A</div><div><div class="tc-name">Ana Luíza M.</div><div class="tc-det">BH · Perdeu 8kg</div></div></div><span class="tc-tag">Alimentação</span></div>
+    <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-txt">"Brigava com minha filha toda semana. Hoje, quando sinto que vou explodir, uso a Escapepen. Já salvou nossa relação."</p><div class="tc-auth"><div class="tc-av">C</div><div><div class="tc-name">Carlos H.</div><div class="tc-det">Florianópolis · Pai de família</div></div></div><span class="tc-tag">Controle emocional</span></div>
+    <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-txt">"Estava perdendo dinheiro com apostas sem perceber. A caneta virou meu freio de emergência."</p><div class="tc-auth"><div class="tc-av">G</div><div><div class="tc-name">Gabriel S.</div><div class="tc-det">Porto Alegre · 5 meses em recuperação</div></div></div><span class="tc-tag">Apostas</span></div>
+    <div class="tc"><div class="tc-stars">★★★★★</div><p class="tc-txt">"Psicóloga há 8 anos. Comecei a recomendar a pacientes com compulsões leves. Os resultados me surpreenderam."</p><div class="tc-auth"><div class="tc-av">J</div><div><div class="tc-name">Juliana R.</div><div class="tc-det">Psicóloga CRP 06/185342</div></div></div><span class="tc-tag">Indicação profissional</span></div>
+  </div>
+</section>
+
+<section id="offer">
+  <div class="offer-top">
+    <div class="offer-badge"><span>⏳ Oferta por tempo limitado · 25% OFF</span></div>
+    <h2 class="offer-ttl">SUA VIDA COMEÇA<br><em>depois do impulso.</em></h2>
+    <p class="offer-sub">Você já tentou força de vontade. Já tentou ignorar. Já tentou substituir.<br>A Escapepen faz o que nada disso faz: <strong>interrompe o circuito antes.</strong></p>
+  </div>
+  <div class="offer-body">
+    <div class="offer-vis">
+      <div class="offer-pen">
+        <svg width="110" height="360" viewBox="0 0 100 400" fill="none">
+          <rect x="60" y="2" width="7" height="90" rx="3" fill="url(#gc)"/>
+          <rect x="18" y="0" width="64" height="18" rx="8" fill="url(#gc)"/>
+          <rect x="16" y="16" width="68" height="88" rx="4" fill="url(#gc)"/>
+          <rect x="14" y="100" width="72" height="10" rx="1" fill="url(#gbd)"/>
+          <rect x="16" y="108" width="68" height="230" rx="2" fill="url(#gb)"/>
+          <rect x="14" y="124" width="72" height="5" rx="1" fill="url(#gbd)"/>
+          <text x="50" y="200" text-anchor="middle" fill="rgba(200,160,80,.7)" font-size="5" letter-spacing="1" font-family="serif">ESCAPEPEN</text>
+          <rect x="14" y="328" width="72" height="12" rx="1" fill="url(#gbd)"/>
+          <rect x="16" y="338" width="68" height="20" rx="2" fill="url(#gc)"/>
+          <path d="M 25 358 Q 50 358 75 358 L 70 372 Q 50 378 30 372 Z" fill="url(#gc)"/>
+          <ellipse cx="50" cy="394" rx="10" ry="5" fill="url(#gbd)"/>
+          <circle cx="50" cy="396" r="3" fill="rgba(240,200,112,.85)"/>
+        </svg>
+      </div>
+      <div class="o-cd">
+        <div class="o-cd-u"><span class="o-cd-n" id="cdh">00</span><span class="o-cd-l">Horas</span></div>
+        <div class="o-cd-u"><span class="o-cd-n" id="cdm">00</span><span class="o-cd-l">Min</span></div>
+        <div class="o-cd-u"><span class="o-cd-n" id="cds">00</span><span class="o-cd-l">Seg</span></div>
+      </div>
+    </div>
+    <div class="offer-price">
+      <div>
+        <p class="p-from">De R$ 996,00</p>
+        <p class="p-now">R$ 747<small>,00</small></p>
+        <p class="p-lbl">→ 25% de desconto aplicado</p>
+      </div>
+      <div class="p-line"></div>
+      <p class="p-inst">ou <strong>12x de R$ 76,01</strong> sem juros</p>
+      <div class="o-perks">
+        <div class="o-perk">1 Escapepen NeuroJoy® original</div>
+        <div class="o-perk">Frete grátis para todo o Brasil</div>
+        <div class="o-perk">Embalagem premium lacrada</div>
+        <div class="o-perk">Suporte via WhatsApp</div>
+        <div class="o-perk">ANVISA regularizado</div>
+      </div>
+      <a href="https://escapepen.lojavirtualnuvem.com.br/produtos/caneta-escapepen-neurojoy/" class="btn-buy" target="_blank"><span>→ Quero Minha Escapepen Agora</span></a>
+      <div class="guar"><span class="guar-ic">🛡️</span><div class="guar-b"><h5>Garantia incondicional de 7 dias</h5><p>Não gostou? Avise por e-mail. 100% do valor de volta, sem perguntas.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="faq-l fup">
+    <h2 class="faq-l-ttl">AINDA<br>TEM<br>DÚVIDAS?</h2>
+    <p class="faq-l-sub">Respostas para as perguntas mais frequentes dos nossos clientes.</p>
+    <div class="faq-contact">
+      <a href="https://wa.me/55988155617" target="_blank">→ WhatsApp (47) 9 8815-5617</a>
+      <a href="mailto:central@escapepen.com.br">→ central@escapepen.com.br</a>
+    </div>
+  </div>
+  <div class="faq-items">
+    <div class="faq-item"><button class="faq-q">O que exatamente é a Escapepen?<span class="faq-qi">+</span></button><div class="faq-a"><div class="faq-ai">A Escapepen NeuroJoy® é uma caneta inaladora de compostos aromáticos terapêuticos 100% naturais. Ao inalar, você ativa uma resposta no sistema límbico que cria uma micro-pausa entre o gatilho do impulso e a ação compulsiva.</div></div></div>
+    <div class="faq-item"><button class="faq-q">Tem nicotina ou substâncias químicas?<span class="faq-qi">+</span></button><div class="faq-a"><div class="faq-ai">Não. A Escapepen é produzida com compostos 100% naturais — sem nicotina, sem substâncias controladas. É segura para uso diário e possui aprovação da ANVISA (Proc. nº 25351046062202575).</div></div></div>
+    <div class="faq-item"><button class="faq-q">Para quais impulsos funciona?<span class="faq-qi">+</span></button><div class="faq-a"><div class="faq-ai">Fumar, comer compulsivamente, telas, reações emocionais, procrastinação, jogos e apostas. Qualquer ciclo gatilho → circuito → ação pode ser interrompido com a micro-pausa da Escapepen.</div></div></div>
+    <div class="faq-item"><button class="faq-q">Quem pode usar?<span class="faq-qi">+</span></button><div class="faq-a"><div class="faq-ai">Qualquer pessoa acima de 12 anos. Não recomendamos para gestantes por precaução. Alérgicos a óleos essenciais devem consultar a bula antes do uso.</div></div></div>
+    <div class="faq-item"><button class="faq-q">Como funciona a entrega?<span class="faq-qi">+</span></button><div class="faq-a"><div class="faq-ai">Entregamos para todo o Brasil com frete gratuito. Prazo médio de 5 a 10 dias úteis. Você recebe o código de rastreio por e-mail assim que o pedido for despachado.</div></div></div>
+    <div class="faq-item"><button class="faq-q">E se eu não gostar?<span class="faq-qi">+</span></button><div class="faq-a"><div class="faq-ai">7 dias de garantia incondicional. Se não for para você, avise em central@escapepen.com.br dentro de 7 dias do recebimento. Devolvemos 100%. Sem perguntas, sem burocracia.</div></div></div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-in">
+    <div>
+      <div class="foot-logo">Escapepen NeuroJoy®</div>
+      <p class="foot-desc">Produto de bem-estar aromático para criar micro-pausas conscientes e devolver o controle sobre impulsos.</p>
+      <p class="foot-legal">KF Comércio e Distribuição de Produtos Farmacêuticos Ltda. · CNPJ 40.235.691/0001-27<br>ANVISA Proc. nº 25351046062202575 · Produto de uso sensorial, não medicamentoso.</p>
+    </div>
+    <div class="foot-col"><h5>Navegação</h5><ul><li><a href="#prod">Produto</a></li><li><a href="#how">Como Funciona</a></li><li><a href="#testi">Depoimentos</a></li><li><a href="#offer">Comprar</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+    <div class="foot-col"><h5>Contato</h5><ul><li><a href="https://wa.me/55988155617" target="_blank">WhatsApp</a></li><li><a href="mailto:central@escapepen.com.br">E-mail</a></li><li><a href="https://instagram.com/escapepen" target="_blank">Instagram</a></li><li><a href="https://tiktok.com/@escapepen" target="_blank">TikTok</a></li><li><a href="https://escapepen.com.br/politica-de-privacidade/" target="_blank">Privacidade</a></li></ul></div>
+  </div>
+  <div class="foot-btm"><p>© 2025 Escapepen® NeuroJoy — Todos os direitos reservados.</p><p>Desenvolvido com propósito.</p></div>
+</footer>
+
+<script>
+const cur=document.getElementById('cur'),curR=document.getElementById('curR');
+let mx=-100,my=-100,rx=-100,ry=-100;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function a(){cur.style.left=mx+'px';cur.style.top=my+'px';rx+=(mx-rx)*.1;ry+=(my-ry)*.1;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(a)})();
+const prog=document.getElementById('prog');
+window.addEventListener('scroll',()=>{prog.style.transform=`scaleX(${window.scrollY/(document.body.scrollHeight-window.innerHeight)})`;document.getElementById('nav').classList.toggle('sc',window.scrollY>50)},{passive:true});
+const pw=document.getElementById('pw');
+if(pw)document.addEventListener('mousemove',e=>{const dx=(e.clientX-window.innerWidth/2)/(window.innerWidth/2),dy=(e.clientY-window.innerHeight/2)/(window.innerHeight/2);pw.style.transform=`rotateY(${dx*14}deg) rotateX(${-dy*10}deg)`});
+document.querySelectorAll('.btn-main,.btn-buy,.n-cta').forEach(b=>{b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.35}px,${(e.clientY-r.top-r.height/2)*.35}px)`});b.addEventListener('mouseleave',()=>b.style.transform='')});
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target)}}),{threshold:.1});
+document.querySelectorAll('.reveal,.fup').forEach(el=>obs.observe(el));
+(function cd(){const end=new Date();end.setHours(23,59,59,0);function t(){const d=end-new Date(),h=Math.floor(d/3600000),m=Math.floor(d%3600000/60000),s=Math.floor(d%60000/1000);document.getElementById('cdh').textContent=String(h).padStart(2,'0');document.getElementById('cdm').textContent=String(m).padStart(2,'0');document.getElementById('cds').textContent=String(s).padStart(2,'0')}t();setInterval(t,1000)})();
+document.querySelectorAll('.faq-q').forEach(q=>q.addEventListener('click',()=>{const i=q.parentElement,o=i.classList.contains('open');document.querySelectorAll('.faq-item').forEach(x=>x.classList.remove('open'));if(!o)i.classList.add('open')}));
+</script>
+</body>
+</html>
