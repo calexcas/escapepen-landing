@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pausa Consciente — Escapepen NeuroJoy®</title>
+<meta name="description" content="A tecnologia de micro-pausas sensoriais que cria 3 a 8 segundos entre o impulso e a ação. 100% natural. Aprovado ANVISA. Até 6 meses de uso.">
+<meta property="og:title" content="Pausa Consciente — Escapepen NeuroJoy®">
+<meta property="og:description" content="Entre o estímulo e a resposta existe um espaço. A Escapepen NeuroJoy® entrega esse espaço de volta para você.">
+<meta property="og:url" content="https://pausaconsciente.com.br">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pausa Consciente — Escapepen NeuroJoy®">
+<meta name="twitter:description" content="Entre o estímulo e a resposta existe um espaço. A Escapepen NeuroJoy® entrega esse espaço de volta para você.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://pausaconsciente.com.br">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────────
+   TOKENS
+───────────────────────────────────────────── */
+:root {
+  --paper:   #F7F5F1;
+  --surface: #FFFFFF;
+  --ink:     #0A1928;
+  --ink-2:   #2C3E50;
+  --muted:   #6B7D8F;
+  --faint:   #9AAAB8;
+  --blue:    #1A5FA8;
+  --blue-2:  #2E7BC4;
+  --blue-l:  #EBF3FB;
+  --blue-p:  #D4E8F7;
+  --sage:    #4D7A5A;
+  --sage-l:  #EDF5EE;
+  --rule:    rgba(10,25,40,.09);
+  --rule-b:  rgba(26,95,168,.12);
+  --shadow:  0 2px 24px rgba(10,25,40,.06);
+  --shadow-l:0 1px 8px rgba(10,25,40,.04);
+}
+
+/* ─────────────────────────────────────────────
+   RESET + BASE
+───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Instrument Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+  overflow-x: hidden;
+  cursor: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Grain */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 900;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='.028'/%3E%3C/svg%3E");
+  pointer-events: none; opacity: .5;
+}
+
+::-webkit-scrollbar { width: 2px; }
+::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 0; }
+
+/* ─────────────────────────────────────────────
+   CURSOR
+───────────────────────────────────────────── */
+.cur {
+  position: fixed; width: 6px; height: 6px;
+  background: var(--blue); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width .2s, height .2s, background .2s;
+}
+.cur-r {
+  position: fixed; width: 30px; height: 30px;
+  border: 1px solid rgba(26,95,168,.4); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%);
+}
+
+/* ─────────────────────────────────────────────
+   PROGRESS
+───────────────────────────────────────────── */
+#prog {
+  position: fixed; top: 0; left: 0; right: 0; height: 1.5px;
+  background: var(--blue); transform-origin: left;
+  transform: scaleX(0); z-index: 1000;
+}
+
+/* ─────────────────────────────────────────────
+   NAV
+───────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 64px; height: 64px;
+  transition: background .4s, border-color .4s;
+}
+nav.sc {
+  background: rgba(247,245,241,.96);
+  backdrop-filter: blur(20px) saturate(1.4);
+  border-bottom: 0.5px solid var(--rule);
+}
+.n-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px; font-weight: 500; letter-spacing: .06em;
+  color: var(--ink);
+}
+.n-logo sup { font-size: 9px; vertical-align: super; color: var(--blue); }
+.n-c { display: flex; align-items: center; gap: 36px; }
+.n-links { display: flex; gap: 24px; list-style: none; }
+.n-links a {
+  font-size: 10.5px; font-weight: 500; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--muted);
+  text-decoration: none; transition: color .2s;
+}
+.n-links a:hover { color: var(--blue); }
+.n-btn {
+  font-size: 10px; font-weight: 500; letter-spacing: .16em;
+  text-transform: uppercase; text-decoration: none;
+  color: var(--blue); border: 0.5px solid var(--blue-2);
+  padding: 9px 20px; cursor: none;
+  transition: background .2s, color .2s;
+  background: transparent;
+}
+.n-btn:hover { background: var(--blue); color: #fff; }
+
+/* ─────────────────────────────────────────────
+   HERO
+───────────────────────────────────────────── */
+#hero {
+  min-height: 100vh;
+  display: grid; grid-template-columns: 1fr 1fr;
+  background: var(--paper);
+  position: relative; overflow: hidden;
+}
+
+.h-left {
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 0 56px 80px 64px; z-index: 2;
+  padding-top: 140px;
+}
+
+.h-eyebrow {
+  font-size: 10px; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--blue); font-weight: 500; margin-bottom: 40px;
+  display: flex; align-items: center; gap: 14px;
+  opacity: 0; animation: aFu .8s .1s forwards;
+}
+.h-eyebrow span { display: block; width: 40px; height: .5px; background: var(--blue); }
+
+.h-display {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300; line-height: .92;
+  letter-spacing: -.01em;
+  margin-bottom: 48px;
+}
+.h-d1 {
+  display: block; font-size: clamp(64px,7.5vw,116px);
+  color: var(--ink);
+  clip-path: inset(0 0 100% 0);
+  animation: aRu .9s cubic-bezier(.16,1,.3,1) .25s forwards;
+}
+.h-d2 {
+  display: block; font-size: clamp(64px,7.5vw,116px);
+  color: var(--ink); font-style: italic;
+  clip-path: inset(0 0 100% 0);
+  animation: aRu .9s cubic-bezier(.16,1,.3,1) .4s forwards;
+}
+.h-d3 {
+  display: block; font-size: clamp(64px,7.5vw,116px);
+  color: var(--blue);
+  clip-path: inset(0 0 100% 0);
+  animation: aRu .9s cubic-bezier(.16,1,.3,1) .55s forwards;
+}
+.h-d4 {
+  display: block; font-size: clamp(64px,7.5vw,116px);
+  color: var(--blue); font-style: italic;
+  clip-path: inset(0 0 100% 0);
+  animation: aRu .9s cubic-bezier(.16,1,.3,1) .7s forwards;
+}
+
+@keyframes aRu { to { clip-path: inset(0 0 0% 0); } }
+@keyframes aFu { to { opacity: 1; transform: none; } }
+
+.h-body {
+  font-size: 15px; color: var(--muted); line-height: 1.8;
+  max-width: 400px; margin-bottom: 52px;
+  opacity: 0; animation: aFu .8s 1s forwards;
+}
+.h-body strong { color: var(--ink-2); font-weight: 500; }
+
+.h-actions {
+  display: flex; align-items: center; gap: 28px;
+  opacity: 0; animation: aFu .8s 1.2s forwards;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--ink); color: #fff;
+  font-size: 10.5px; font-weight: 500; letter-spacing: .16em;
+  text-transform: uppercase; text-decoration: none;
+  padding: 15px 32px; cursor: none;
+  transition: background .25s; position: relative; overflow: hidden;
+  font-family: 'Instrument Sans', sans-serif;
+}
+.btn-primary::after {
+  content: ''; position: absolute; inset: 0;
+  background: var(--blue); transform: scaleX(0);
+  transform-origin: left; transition: transform .3s;
+}
+.btn-primary:hover::after { transform: scaleX(1); }
+.btn-primary span { position: relative; z-index: 1; }
+
+.btn-link {
+  font-size: 11px; color: var(--muted); text-decoration: none;
+  letter-spacing: .1em; cursor: none;
+  border-bottom: .5px solid var(--rule); padding-bottom: 2px;
+  transition: color .2s, border-color .2s;
+}
+.btn-link:hover { color: var(--blue); border-color: var(--blue-2); }
+
+/* HERO RIGHT — PEN STAGE */
+.h-right {
+  position: relative; display: flex;
+  align-items: center; justify-content: center;
+  background: linear-gradient(160deg, var(--blue-l) 0%, var(--paper) 70%);
+  overflow: hidden;
+  opacity: 0; animation: aFu 1.2s .5s forwards;
+}
+.h-right::before {
+  content: ''; position: absolute;
+  width: 360px; height: 360px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(26,95,168,.08) 0%, transparent 70%);
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  animation: gp 5s ease-in-out infinite;
+}
+@keyframes gp { 0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.12)} }
+
+.pen-stage {
+  position: relative; z-index: 2;
+  animation: pfl 5s ease-in-out infinite;
+  filter: drop-shadow(0 24px 56px rgba(26,95,168,.18)) drop-shadow(0 4px 12px rgba(10,25,40,.08));
+}
+@keyframes pfl { 0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-16px) rotate(-4deg)} }
+
+.orbit {
+  position: absolute;
+  width: 380px; height: 380px; border-radius: 50%;
+  border: .5px solid rgba(26,95,168,.1);
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  animation: ors 28s linear infinite;
+}
+.orbit::before {
+  content: ''; position: absolute; top: -4px; left: 50%;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--blue-2); transform: translateX(-50%);
+  opacity: .6;
+}
+.orbit-2 {
+  position: absolute;
+  width: 500px; height: 500px; border-radius: 50%;
+  border: .5px solid rgba(26,95,168,.05);
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  animation: ors 45s linear infinite reverse;
+}
+@keyframes ors { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+/* ─────────────────────────────────────────────
+   STATS STRIP
+───────────────────────────────────────────── */
+.stats-strip {
+  display: grid; grid-template-columns: repeat(5,1fr);
+  border-top: .5px solid var(--rule); border-bottom: .5px solid var(--rule);
+  background: var(--surface);
+}
+.stat-cell {
+  padding: 32px 40px;
+  border-right: .5px solid var(--rule);
+  display: flex; flex-direction: column; gap: 6px;
+}
+.stat-cell:last-child { border-right: none; }
+.s-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 40px; font-weight: 300; color: var(--blue);
+  line-height: 1; letter-spacing: -.01em;
+}
+.s-label {
+  font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--faint); font-weight: 500;
+}
+.s-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* ─────────────────────────────────────────────
+   SECTION UTILS
+───────────────────────────────────────────── */
+.sec { padding: 128px 64px; }
+.sec-sm { padding: 80px 64px; }
+.sec-label {
+  font-size: 10px; letter-spacing: .28em; text-transform: uppercase;
+  color: var(--blue); font-weight: 500;
+  display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+}
+.sec-label::before { content: ''; display: block; width: 28px; height: .5px; background: var(--blue); }
+.display {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300; line-height: .94;
+  letter-spacing: -.01em; color: var(--ink);
+  font-size: clamp(44px, 5.5vw, 88px);
+}
+.display em { font-style: italic; color: var(--blue); }
+.body-text {
+  font-size: 15px; color: var(--muted); line-height: 1.8;
+  font-weight: 300; max-width: 560px;
+}
+.body-text strong { color: var(--ink-2); font-weight: 500; }
+.rule { border: none; border-top: .5px solid var(--rule); }
+
+/* ─────────────────────────────────────────────
+   MARQUEE
+───────────────────────────────────────────── */
+.mq-strip {
+  overflow: hidden; background: var(--ink);
+  padding: 14px 0; border-top: .5px solid var(--rule);
+  border-bottom: .5px solid var(--rule);
+}
+.mq-t { display: flex; animation: mq 30s linear infinite; width: max-content; }
+.mq-i {
+  white-space: nowrap;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px; font-style: italic; font-weight: 300;
+  letter-spacing: .06em; color: rgba(255,255,255,.5);
+  padding: 0 48px;
+}
+.mq-i::after { content: '·'; margin-left: 48px; color: rgba(255,255,255,.2); }
+@keyframes mq { from{transform:translateX(0)}to{transform:translateX(-50%)} }
+
+/* ─────────────────────────────────────────────
+   PAIN ROWS
+───────────────────────────────────────────── */
+#pain { padding: 0; background: var(--surface); }
+.pain-header { padding: 112px 64px 72px; border-bottom: .5px solid var(--rule); }
+.pain-row {
+  display: grid; grid-template-columns: 72px 1fr 1fr 40px;
+  align-items: center; gap: 0;
+  border-bottom: .5px solid var(--rule);
+  padding: 28px 64px;
+  cursor: none; transition: background .25s;
+  position: relative;
+}
+.pain-row:hover { background: var(--blue-l); }
+.p-emoji { font-size: 28px; line-height: 1; }
+.p-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(22px, 2.5vw, 40px);
+  font-weight: 400; color: var(--ink); letter-spacing: -.01em;
+  padding-right: 32px;
+}
+.p-desc { font-size: 13.5px; color: var(--muted); line-height: 1.7; font-weight: 300; padding-right: 24px; }
+.p-arrow { font-size: 16px; color: var(--blue-2); opacity: 0; transition: opacity .2s, transform .2s; transform: translateX(-6px); }
+.pain-row:hover .p-arrow { opacity: 1; transform: translateX(0); }
+
+/* ─────────────────────────────────────────────
+   FRANKL
+───────────────────────────────────────────── */
+#frankl {
+  padding: 160px 64px;
+  background: var(--ink);
+  position: relative; overflow: hidden;
+}
+#frankl::before {
+  content: ''; position: absolute;
+  width: 700px; height: 700px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(26,95,168,.12) 0%, transparent 65%);
+  top: 50%; right: -200px; transform: translateY(-50%);
+}
+.frankl-inner { max-width: 1100px; position: relative; z-index: 2; }
+.frankl-pre {
+  font-size: 10px; letter-spacing: .3em; text-transform: uppercase;
+  color: rgba(255,255,255,.3); margin-bottom: 64px; display: block;
+  font-weight: 500;
+}
+.frankl-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300; line-height: 1.1; font-style: italic;
+  color: #fff; margin-bottom: 64px;
+}
+.fq-line {
+  display: block;
+  font-size: clamp(32px, 4.5vw, 68px);
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path .9s cubic-bezier(.16,1,.3,1);
+}
+.fq-line.vis { clip-path: inset(0 0 0% 0); }
+.fq-line:nth-child(2) { transition-delay: .12s; }
+.fq-line:nth-child(3) { transition-delay: .24s; }
+.fq-line em { color: var(--blue-2); font-style: normal; }
+
+.frankl-rule { width: 48px; height: .5px; background: rgba(255,255,255,.2); margin-bottom: 24px; }
+.frankl-attr {
+  font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(255,255,255,.3); font-weight: 500;
+}
+
+/* ─────────────────────────────────────────────
+   NOT SECTION — 2 col editorial
+───────────────────────────────────────────── */
+#notis {
+  background: var(--surface);
+  display: grid; grid-template-columns: 1fr 1fr;
+}
+.not-left {
+  padding: 112px 64px; border-right: .5px solid var(--rule);
+  display: flex; flex-direction: column; justify-content: center;
+}
+.not-right { padding: 112px 64px; display: flex; flex-direction: column; gap: 0; justify-content: center; }
+.not-item {
+  padding: 28px 0; border-bottom: .5px solid var(--rule);
+  display: grid; grid-template-columns: 28px 1fr; gap: 20px; align-items: start;
+}
+.not-item:first-child { border-top: .5px solid var(--rule); }
+.not-x {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: rgba(192,57,43,.1); color: #C0392B;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; flex-shrink: 0; margin-top: 2px;
+}
+.not-item h4 { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 5px; letter-spacing: .01em; }
+.not-item p { font-size: 13px; color: var(--muted); line-height: 1.65; font-weight: 300; }
+
+/* ─────────────────────────────────────────────
+   MECHANISM
+───────────────────────────────────────────── */
+#mech { background: var(--paper); }
+.mech-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 96px; margin-top: 72px; align-items: start;
+}
+.mech-steps { display: flex; flex-direction: column; }
+.mech-step {
+  display: grid; grid-template-columns: 40px 1fr;
+  gap: 24px; padding: 28px 0;
+  border-bottom: .5px solid var(--rule);
+  align-items: start; cursor: none;
+  transition: background .2s;
+}
+.mech-step:first-child { border-top: .5px solid var(--rule); }
+.mech-step:hover { background: var(--blue-l); margin: 0 -12px; padding: 28px 12px; }
+.mech-n {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--ink); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; flex-shrink: 0; margin-top: 2px;
+}
+.mech-step h4 { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+.mech-step p { font-size: 13px; color: var(--muted); line-height: 1.7; font-weight: 300; }
+
+.mech-visual { display: flex; flex-direction: column; gap: 24px; position: sticky; top: 100px; }
+.flow-box {
+  background: var(--surface); border: .5px solid var(--rule);
+  padding: 40px; box-shadow: var(--shadow);
+}
+.flow-title { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--faint); margin-bottom: 24px; font-weight: 500; }
+.flow-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.flow-row:last-child { margin-bottom: 0; }
+.flow-pill {
+  flex: 1; padding: 10px 16px; border: .5px solid var(--rule);
+  font-size: 12px; font-weight: 500; color: var(--ink-2);
+  text-align: center; background: var(--paper); letter-spacing: .04em;
+}
+.flow-pill.accent { background: var(--blue); color: #fff; border-color: var(--blue); }
+.flow-pill.good { background: var(--sage-l); color: var(--sage); border-color: rgba(77,122,90,.2); }
+.flow-arrow { font-size: 14px; color: var(--faint); flex-shrink: 0; }
+.flow-sep { height: .5px; background: var(--rule); margin: 20px 0; }
+.insight-box {
+  background: var(--blue); padding: 28px 32px;
+}
+.insight-box p {
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: 18px; font-weight: 300; color: #fff; line-height: 1.5;
+}
+.insight-box cite { display: block; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-top: 12px; font-style: normal; font-weight: 500; font-family: 'Instrument Sans', sans-serif; }
+
+/* ─────────────────────────────────────────────
+   FORMULA
+───────────────────────────────────────────── */
+#formula { background: var(--sage-l); border-top: .5px solid rgba(77,122,90,.15); }
+.form-intro {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 64px; margin-bottom: 80px; align-items: end;
+}
+.form-body { font-size: 15px; color: var(--muted); line-height: 1.8; font-weight: 300; max-width: 480px; }
+.form-grid {
+  display: grid; grid-template-columns: repeat(5,1fr);
+  gap: 1px; background: rgba(77,122,90,.12);
+  border: .5px solid rgba(77,122,90,.15);
+}
+.form-card {
+  background: var(--surface); padding: 32px 24px;
+  display: flex; flex-direction: column; gap: 10px;
+  transition: background .25s; cursor: none;
+}
+.form-card:hover { background: var(--sage-l); }
+.form-ic { font-size: 28px; }
+.form-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px; font-style: italic; font-weight: 400;
+  color: var(--ink); line-height: 1.3;
+}
+.form-action {
+  font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--sage); font-weight: 600;
+}
+.form-desc { font-size: 12px; color: var(--muted); line-height: 1.55; font-weight: 300; }
+
+/* ─────────────────────────────────────────────
+   HOW
+───────────────────────────────────────────── */
+#how { background: var(--surface); }
+.how-steps {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 0; margin-top: 72px;
+  border: .5px solid var(--rule);
+}
+.how-s {
+  padding: 48px 40px; border-right: .5px solid var(--rule);
+  transition: background .25s; cursor: none; position: relative;
+}
+.how-s:last-child { border-right: none; }
+.how-s:hover { background: var(--blue-l); }
+.how-ic { font-size: 44px; margin-bottom: 24px; display: block; }
+.how-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px; color: var(--faint); letter-spacing: .14em;
+  margin-bottom: 12px; display: block; font-weight: 400;
+}
+.how-s h3 { font-size: 17px; font-weight: 600; color: var(--ink); margin-bottom: 12px; letter-spacing: .01em; }
+.how-s p { font-size: 13.5px; color: var(--muted); line-height: 1.75; font-weight: 300; }
+.how-tag {
+  display: inline-block; margin-top: 20px;
+  font-size: 9.5px; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--blue); border-bottom: .5px solid var(--rule-b);
+  padding-bottom: 3px; font-weight: 500;
+}
+
+/* ─────────────────────────────────────────────
+   TESTIMONIALS — editorial 3-column
+───────────────────────────────────────────── */
+#testi { background: var(--paper); }
+.testi-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 0; margin-top: 72px;
+  border: .5px solid var(--rule);
+}
+.tc {
+  padding: 40px 36px; border-right: .5px solid var(--rule);
+  position: relative; background: var(--surface);
+  transition: background .25s;
+}
+.tc:last-child { border-right: none; }
+.tc:hover { background: var(--blue-l); }
+.tc-stars { color: var(--blue); font-size: 12px; letter-spacing: 3px; margin-bottom: 20px; }
+.tc-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px; font-style: italic; font-weight: 300;
+  color: var(--ink-2); line-height: 1.65; margin-bottom: 28px;
+}
+.tc-author { display: flex; flex-direction: column; gap: 3px; }
+.tc-name { font-size: 13px; font-weight: 600; color: var(--ink); letter-spacing: .01em; }
+.tc-detail { font-size: 11.5px; color: var(--faint); }
+.tc-tag {
+  display: inline-block; margin-top: 16px;
+  font-size: 9px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--blue); border: .5px solid var(--rule-b);
+  padding: 4px 10px; font-weight: 500;
+}
+/* Second row of testimonials */
+.testi-grid-2 {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 0; margin-top: 0;
+  border: .5px solid var(--rule); border-top: none;
+}
+
+/* ─────────────────────────────────────────────
+   OFFER
+───────────────────────────────────────────── */
+#offer { background: var(--surface); }
+.offer-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  border: .5px solid var(--rule); margin-top: 72px;
+}
+.offer-vis {
+  background: var(--blue-l); border-right: .5px solid var(--rule);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 64px; gap: 36px;
+}
+.offer-pen-wrap { animation: pfl 5s ease-in-out infinite; }
+.cd {
+  display: flex; background: var(--surface);
+  border: .5px solid var(--rule);
+}
+.cd-u {
+  text-align: center; padding: 16px 24px; min-width: 80px;
+  border-right: .5px solid var(--rule);
+}
+.cd-u:last-child { border-right: none; }
+.cd-n {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 44px; font-weight: 300; color: var(--ink);
+  line-height: 1; display: block;
+}
+.cd-l { font-size: 8.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--faint); display: block; margin-top: 4px; font-weight: 500; }
+
+.offer-details { padding: 64px; display: flex; flex-direction: column; justify-content: center; gap: 28px; }
+.price-from {
+  font-size: 14px;
+  color: var(--faint);
+  text-decoration: line-through;
+  letter-spacing: .02em;
+  margin-bottom: 12px;
+}
+.price-main {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  line-height: 1.05;
+  margin: 4px 0 14px;
+}
+.price-cur {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--ink);
+  padding-bottom: 0;
+}
+.price-int {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 88px;
+  font-weight: 300;
+  color: var(--ink);
+  letter-spacing: -.03em;
+  line-height: 1.1;
+  display: inline-block;
+}
+.price-dec {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--muted);
+  padding-bottom: 0;
+}
+.price-note { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--blue); font-weight: 500; margin-top: 4px; }
+.price-rule { height: .5px; background: var(--rule); }
+.price-install { font-size: 15px; color: var(--muted); font-weight: 300; }
+.price-install strong { color: var(--blue); font-weight: 600; }
+.perks { display: flex; flex-direction: column; gap: 10px; }
+.perk {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; color: var(--muted); font-weight: 300;
+}
+.perk::before {
+  content: ''; width: 4px; height: 4px;
+  background: var(--blue); border-radius: 50%; flex-shrink: 0;
+}
+.btn-offer {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--ink); color: #fff;
+  font-size: 11px; font-weight: 500; letter-spacing: .18em;
+  text-transform: uppercase; text-decoration: none;
+  padding: 20px; cursor: none; position: relative; overflow: hidden;
+  font-family: 'Instrument Sans', sans-serif;
+}
+.btn-offer::after {
+  content: ''; position: absolute; inset: 0;
+  background: var(--blue); transform: scaleX(0);
+  transform-origin: left; transition: transform .3s;
+}
+.btn-offer:hover::after { transform: scaleX(1); }
+.btn-offer span { position: relative; z-index: 1; }
+.guarantee {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 20px 24px; background: var(--paper); border: .5px solid var(--rule);
+}
+.guar-ic { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+.guar-text h5 { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+.guar-text p { font-size: 12px; color: var(--muted); line-height: 1.55; font-weight: 300; }
+
+/* ─────────────────────────────────────────────
+   ANVISA STRIP
+───────────────────────────────────────────── */
+.anvisa-strip {
+  background: var(--surface);
+  border-top: .5px solid var(--rule); border-bottom: .5px solid var(--rule);
+  display: flex; align-items: center; justify-content: center;
+  gap: 56px; padding: 24px 64px;
+  flex-wrap: wrap;
+}
+.anvisa-item {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 11px; color: var(--muted); font-weight: 400; letter-spacing: .04em;
+}
+.anvisa-item strong { color: var(--ink-2); font-weight: 600; }
+.anvisa-dot { width: 4px; height: 4px; background: var(--blue-2); border-radius: 50%; }
+
+/* ─────────────────────────────────────────────
+   FAQ
+───────────────────────────────────────────── */
+#faq {
+  background: var(--paper);
+  display: grid; grid-template-columns: 1fr 1.5fr;
+  gap: 96px; padding: 128px 64px;
+}
+.faq-left { position: sticky; top: 96px; }
+.faq-display {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(48px, 5.5vw, 84px); font-weight: 300;
+  line-height: .94; color: var(--ink); margin-bottom: 24px;
+}
+.faq-display em { font-style: italic; color: var(--blue); }
+.faq-sub { font-size: 15px; color: var(--muted); line-height: 1.75; font-weight: 300; margin-bottom: 40px; max-width: 320px; }
+.faq-links { display: flex; flex-direction: column; gap: 12px; }
+.faq-links a {
+  font-size: 12.5px; color: var(--muted); text-decoration: none;
+  letter-spacing: .02em; display: flex; align-items: center; gap: 8px;
+  transition: color .2s; cursor: none;
+}
+.faq-links a:hover { color: var(--blue); }
+.faq-items { display: flex; flex-direction: column; }
+.fq { border-top: .5px solid var(--rule); overflow: hidden; }
+.fq:last-child { border-bottom: .5px solid var(--rule); }
+.fq-q {
+  width: 100%; background: none; border: none;
+  color: var(--ink); font-family: 'Instrument Sans', sans-serif;
+  font-size: 15px; font-weight: 500; text-align: left;
+  padding: 24px 0; cursor: none;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 20px; transition: color .2s; letter-spacing: .01em;
+}
+.fq-q:hover { color: var(--blue); }
+.fq-icon {
+  width: 24px; height: 24px; border: .5px solid var(--rule);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 16px; color: var(--blue);
+  transition: transform .3s, background .2s;
+}
+.fq.open .fq-icon { transform: rotate(45deg); background: var(--blue-l); }
+.fq-a { max-height: 0; overflow: hidden; transition: max-height .4s ease; }
+.fq-ai {
+  padding: 0 0 24px; font-size: 14px; color: var(--muted);
+  line-height: 1.8; font-weight: 300;
+}
+.fq.open .fq-a { max-height: 500px; }
+
+/* ─────────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────────── */
+footer {
+  background: var(--ink);
+  border-top: .5px solid rgba(255,255,255,.06);
+}
+.ft-top {
+  display: grid; grid-template-columns: 1.8fr 1fr 1fr;
+  gap: 64px; padding: 80px 64px 56px;
+}
+.ft-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; font-weight: 400; color: #fff;
+  letter-spacing: .04em; margin-bottom: 16px;
+}
+.ft-logo sup { font-size: 9px; vertical-align: super; color: var(--blue-2); }
+.ft-desc { font-size: 13px; color: rgba(255,255,255,.4); line-height: 1.7; max-width: 300px; font-weight: 300; margin-bottom: 24px; }
+.ft-legal { font-size: 10px; color: rgba(255,255,255,.2); line-height: 1.7; }
+.ft-col-h {
+  font-size: 9px; letter-spacing: .24em; text-transform: uppercase;
+  color: rgba(255,255,255,.3); margin-bottom: 20px; font-weight: 500;
+}
+.ft-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.ft-col ul a {
+  font-size: 13px; color: rgba(255,255,255,.4); text-decoration: none;
+  transition: color .2s; font-weight: 300; cursor: none;
+}
+.ft-col ul a:hover { color: #fff; }
+.ft-bottom {
+  padding: 20px 64px;
+  border-top: .5px solid rgba(255,255,255,.06);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.ft-bottom p { font-size: 10.5px; color: rgba(255,255,255,.2); letter-spacing: .04em; }
+.ft-manifesto {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px; font-style: italic; font-weight: 300;
+  color: rgba(255,255,255,.15); letter-spacing: .04em;
+}
+
+/* ─────────────────────────────────────────────
+   ANIMATIONS
+───────────────────────────────────────────── */
+.reveal {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1s cubic-bezier(.16,1,.3,1);
+}
+.reveal.vis { clip-path: inset(0 0 0% 0); }
+.fade {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+}
+.fade.vis { opacity: 1; transform: translateY(0); }
+
+/* ─────────────────────────────────────────────
+   HAMBURGER MENU
+───────────────────────────────────────────── */
+.ham {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: none; padding: 4px; background: none; border: none;
+}
+.ham span {
+  display: block; width: 22px; height: 1.5px;
+  background: var(--ink); transition: all .3s;
+}
+.mob-menu {
+  display: none; position: fixed; top: 64px; left: 0; right: 0;
+  background: rgba(247,245,241,.98); backdrop-filter: blur(20px);
+  border-bottom: .5px solid var(--rule); z-index: 499;
+  padding: 24px 24px 32px; flex-direction: column; gap: 0;
+}
+.mob-menu.open { display: flex; }
+.mob-menu a {
+  font-size: 13px; font-weight: 500; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted);
+  text-decoration: none; padding: 14px 0;
+  border-bottom: .5px solid var(--rule);
+  transition: color .2s;
+}
+.mob-menu a:last-child { border-bottom: none; }
+.mob-menu a:hover { color: var(--blue); }
+
+/* ─────────────────────────────────────────────
+   MOBILE STICKY CTA
+───────────────────────────────────────────── */
+.mob-cta {
+  display: none; position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(247,245,241,.97); backdrop-filter: blur(16px);
+  border-top: .5px solid var(--rule); z-index: 490;
+  padding: 12px 20px 20px;
+}
+.mob-cta a {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--ink); color: #fff;
+  font-size: 11px; font-weight: 600; letter-spacing: .16em;
+  text-transform: uppercase; text-decoration: none;
+  padding: 16px; font-family: 'Instrument Sans', sans-serif;
+}
+
+/* ─────────────────────────────────────────────
+   WHATSAPP FLOAT
+───────────────────────────────────────────── */
+.wa-float {
+  position: fixed; bottom: 96px; right: 24px;
+  width: 52px; height: 52px; border-radius: 50%;
+  background: #25D366; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; z-index: 480; cursor: none;
+  box-shadow: 0 4px 20px rgba(37,211,102,.35);
+  text-decoration: none;
+  transition: transform .2s, box-shadow .2s;
+  animation: waPulse 2.5s ease-in-out infinite;
+}
+.wa-float:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(37,211,102,.45); }
+@keyframes waPulse {
+  0%,100%{ box-shadow: 0 4px 20px rgba(37,211,102,.35); }
+  50%{ box-shadow: 0 4px 28px rgba(37,211,102,.55), 0 0 0 8px rgba(37,211,102,.08); }
+}
+
+/* ─────────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  :root {
+    --rule: rgba(10,25,40,.18);
+    --rule-b: rgba(26,95,168,.22);
+  }
+  nav { padding: 0 24px; }
+  .n-links { display: none; }
+  .n-btn { display: none; }
+  .ham { display: flex; }
+  #hero { grid-template-columns: 1fr; min-height: auto; }
+  .h-left { padding: 120px 24px 60px; }
+  .h-right { display: none; }
+  .stats-strip { grid-template-columns: 1fr 1fr; }
+  .sec, .sec-sm { padding: 80px 24px; }
+  .pain-header { padding: 80px 24px 48px; }
+  .pain-row { grid-template-columns: 56px 1fr; padding: 22px 24px; }
+  .p-desc { display: none; } .p-arrow { display: none; }
+  #frankl { padding: 100px 24px; }
+  #notis { grid-template-columns: 1fr; }
+  .not-left { padding: 72px 24px; border-right: none; border-bottom: .5px solid var(--rule); }
+  .not-right { padding: 48px 24px; }
+  #mech { padding: 80px 24px; }
+  .mech-grid { grid-template-columns: 1fr; gap: 40px; }
+  .mech-visual { position: static; }
+  #formula { padding: 80px 24px; }
+  .form-intro { grid-template-columns: 1fr; gap: 24px; }
+  .form-grid { grid-template-columns: 1fr 1fr; }
+  #how { padding: 80px 24px; }
+  .how-steps { grid-template-columns: 1fr; }
+  .how-s { border-right: none; border-bottom: .5px solid var(--rule); }
+  #testi { padding: 80px 24px; }
+  .testi-grid, .testi-grid-2 { grid-template-columns: 1fr; }
+  .tc { border-right: none; border-bottom: .5px solid var(--rule); }
+  #offer { padding: 80px 24px; }
+  .offer-grid { grid-template-columns: 1fr; }
+  .offer-vis { display: none; }
+  .offer-details { padding: 40px 24px; }
+  #faq { grid-template-columns: 1fr; padding: 80px 24px; gap: 48px; }
+  .faq-left { position: static; }
+  .anvisa-strip { padding: 20px 24px; gap: 24px; }
+  footer { padding: 0; }
+  .ft-top { grid-template-columns: 1fr; padding: 56px 24px 40px; gap: 36px; }
+  .ft-bottom { padding: 18px 24px; flex-direction: column; gap: 6px; text-align: center; }
+  .mob-cta { display: block; }
+  .wa-float { bottom: 88px; }
+}
+
+@media (max-width: 640px) {
+  .stats-strip { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  .frankl-quote { font-size: clamp(24px, 7vw, 40px); }
+}
+</style>
+</head>
+<body>
+
+<div id="prog"></div>
+<div class="cur" id="cur"></div>
+<div class="cur-r" id="curR"></div>
+
+<!-- ══════════════════ NAV ══════════════════ -->
+<nav id="nav">
+  <a href="https://pausaconsciente.com.br" class="n-logo" style="text-decoration:none">Escapepen<sup>®</sup> NeuroJoy</a>
+  <div class="n-c">
+    <ul class="n-links">
+      <li><a href="#mech">Mecanismo</a></li>
+      <li><a href="#formula">Fórmula</a></li>
+      <li><a href="#testi">Depoimentos</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a href="#offer" class="n-btn">Quero a minha</a>
+    <button class="ham" id="ham" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mob-menu" id="mobMenu">
+  <a href="#mech" onclick="closeMobMenu()">Mecanismo</a>
+  <a href="#formula" onclick="closeMobMenu()">Fórmula</a>
+  <a href="#testi" onclick="closeMobMenu()">Depoimentos</a>
+  <a href="#faq" onclick="closeMobMenu()">FAQ</a>
+  <a href="#offer" onclick="closeMobMenu()" style="color:var(--blue);font-weight:600">→ Quero a minha</a>
+</div>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/5521985220833" class="wa-float" target="_blank" title="Fale conosco no WhatsApp">💬</a>
+
+<!-- MOBILE STICKY CTA -->
+<div class="mob-cta">
+  <a href="#offer">→ Quero Minha Escapepen</a>
+</div>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section id="hero">
+  <div class="h-left">
+    <div class="h-eyebrow"><span></span>A ciência das micro-pausas</div>
+    <h1 class="h-display">
+      <span class="h-d1">Entre o</span>
+      <span class="h-d2">estímulo</span>
+      <span class="h-d3">e a</span>
+      <span class="h-d4">resposta.</span>
+    </h1>
+    <p class="h-body">
+      A <strong>Escapepen NeuroJoy®</strong> é uma tecnologia não-digital que insere micro-pausas conscientes entre o impulso automático e a ação — devolvendo a você a soberania sobre suas decisões.
+    </p>
+    <div class="h-actions">
+      <a href="#offer" class="btn-primary" id="hBtn"><span>Recuperar o controle</span></a>
+      <a href="#mech" class="btn-link">Como funciona →</a>
+    </div>
+  </div>
+  <div class="h-right">
+    <div class="orbit"></div>
+    <div class="orbit-2"></div>
+    <!-- Premium white pen SVG -->
+    <svg class="pen-stage" width="130" height="540" viewBox="0 0 90 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="pg-body" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#C8DCF0"/>
+          <stop offset="20%" stop-color="#EEF6FF"/>
+          <stop offset="45%" stop-color="#FFFFFF"/>
+          <stop offset="72%" stop-color="#F2F8FF"/>
+          <stop offset="100%" stop-color="#BACED8"/>
+        </linearGradient>
+        <linearGradient id="pg-cap" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#BED4E8"/>
+          <stop offset="30%" stop-color="#E8F4FF"/>
+          <stop offset="55%" stop-color="#FAFCFF"/>
+          <stop offset="80%" stop-color="#E0EEF8"/>
+          <stop offset="100%" stop-color="#B0C8DC"/>
+        </linearGradient>
+        <linearGradient id="pg-blue" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#3A8FD4"/>
+          <stop offset="100%" stop-color="#0C3059"/>
+        </linearGradient>
+        <linearGradient id="pg-gold" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#B89040"/>
+          <stop offset="40%" stop-color="#D8B060"/>
+          <stop offset="60%" stop-color="#E8C878"/>
+          <stop offset="100%" stop-color="#B89040"/>
+        </linearGradient>
+        <radialGradient id="pg-shine" cx="22%" cy="50%" r="28%">
+          <stop offset="0%" stop-color="rgba(255,255,255,.75)"/>
+          <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+        </radialGradient>
+        <radialGradient id="pg-shad" cx="78%" cy="50%" r="22%">
+          <stop offset="0%" stop-color="rgba(10,25,40,.06)"/>
+          <stop offset="100%" stop-color="rgba(10,25,40,0)"/>
+        </radialGradient>
+        <filter id="pen-drop">
+          <feDropShadow dx="2" dy="6" stdDeviation="10" flood-color="rgba(26,95,168,.2)"/>
+          <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="rgba(10,25,40,.1)"/>
+        </filter>
+      </defs>
+      <g filter="url(#pen-drop)">
+        <!-- Cap top dome -->
+        <ellipse cx="45" cy="9" rx="14" ry="8" fill="url(#pg-cap)"/>
+        <!-- Cap upper ring -->
+        <rect x="16" y="7" width="58" height="8" rx="2" fill="url(#pg-cap)"/>
+        <!-- Cap body -->
+        <rect x="13" y="13" width="64" height="84" rx="3" fill="url(#pg-cap)"/>
+        <!-- Cap shine -->
+        <rect x="17" y="13" width="10" height="84" rx="4" fill="url(#pg-shine)"/>
+        <!-- Cap shadow -->
+        <rect x="60" y="13" width="8" height="84" rx="4" fill="url(#pg-shad)"/>
+        <!-- Blue separator band -->
+        <rect x="11" y="93" width="68" height="7" rx="1" fill="url(#pg-blue)"/>
+        <!-- BODY -->
+        <rect x="13" y="98" width="64" height="216" rx="2" fill="url(#pg-body)"/>
+        <!-- Body shine left -->
+        <rect x="17" y="98" width="9" height="216" rx="3" fill="url(#pg-shine)"/>
+        <!-- Body shadow right -->
+        <rect x="60" y="98" width="8" height="216" rx="3" fill="url(#pg-shad)"/>
+        <!-- Brand text (rotated) -->
+        <text x="45" y="140" text-anchor="middle" fill="rgba(26,95,168,.35)" font-size="5.5" letter-spacing="1.8" font-family="sans-serif" font-weight="500" transform="rotate(-90,45,155)">Escapepen  free yourself</text>
+        <!-- Gold 15ml label -->
+        <rect x="22" y="210" width="46" height="20" rx="2.5" fill="url(#pg-gold)"/>
+        <text x="45" y="223" text-anchor="middle" fill="rgba(255,255,255,.95)" font-size="8.5" font-weight="700" font-family="sans-serif" letter-spacing=".8">15ml</text>
+        <!-- Black GO badge -->
+        <rect x="30" y="237" width="30" height="16" rx="8" fill="#111"/>
+        <text x="45" y="248" text-anchor="middle" fill="#fff" font-size="8" font-weight="700" font-family="sans-serif" letter-spacing="1.5">GO</text>
+        <!-- Blue temp band -->
+        <rect x="13" y="258" width="64" height="38" rx="1" fill="url(#pg-blue)"/>
+        <text x="45" y="273" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="7" font-family="sans-serif" letter-spacing=".8">⊲ 30°C</text>
+        <text x="45" y="284" text-anchor="middle" fill="rgba(255,255,255,.45)" font-size="5.5" font-family="sans-serif" letter-spacing=".5">conservar em local fresco</text>
+        <!-- Lower body -->
+        <rect x="13" y="294" width="64" height="62" rx="2" fill="url(#pg-body)"/>
+        <!-- ANVISA badge area on body -->
+        <rect x="25" y="306" width="40" height="10" rx="1" fill="rgba(26,95,168,.06)"/>
+        <text x="45" y="314" text-anchor="middle" fill="rgba(26,95,168,.35)" font-size="4.5" font-family="sans-serif" letter-spacing=".8">ANVISA REG.</text>
+        <!-- Tip taper -->
+        <path d="M 20 356 Q 45 356 70 356 L 65 372 Q 45 380 25 372 Z" fill="url(#pg-body)"/>
+        <path d="M 28 372 Q 45 380 62 372 L 59 386 Q 45 393 31 386 Z" fill="url(#pg-cap)"/>
+        <!-- Nozzle -->
+        <ellipse cx="45" cy="396" rx="13" ry="6" fill="url(#pg-blue)" opacity=".9"/>
+        <ellipse cx="45" cy="398" rx="7" ry="4" fill="#EBF3FB"/>
+        <ellipse cx="45" cy="399" rx="4" ry="2.5" fill="url(#pg-blue)"/>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════════════ STATS ══════════════════ -->
+<div class="stats-strip fade">
+  <div class="stat-cell">
+    <span class="s-num">+5.000</span>
+    <span class="s-label">Clientes ativos</span>
+    <span class="s-sub">em todo o Brasil</span>
+  </div>
+  <div class="stat-cell">
+    <span class="s-num">4.9 ★</span>
+    <span class="s-label">Avaliação média</span>
+    <span class="s-sub">verificada</span>
+  </div>
+  <div class="stat-cell">
+    <span class="s-num">5–6</span>
+    <span class="s-label">Meses de duração</span>
+    <span class="s-sub">até 20 inalações/dia</span>
+  </div>
+  <div class="stat-cell">
+    <span class="s-num">100%</span>
+    <span class="s-label">Natural e botânico</span>
+    <span class="s-sub">sem nicotina ou sintéticos</span>
+  </div>
+  <div class="stat-cell">
+    <span class="s-num">+12</span>
+    <span class="s-label">Anos de idade</span>
+    <span class="s-sub">seguro para toda a família</span>
+  </div>
+</div>
+
+<!-- ══════════════════ MARQUEE ══════════════════ -->
+<div class="mq-strip" aria-hidden="true">
+  <div class="mq-t">
+    <span class="mq-i">Ciência das Pausas Sensoriais</span>
+    <span class="mq-i">Ativos Botânicos Puros</span>
+    <span class="mq-i">Regulamentado pela ANVISA</span>
+    <span class="mq-i">Protocolo NeuroJoy®</span>
+    <span class="mq-i">Fricção Comportamental</span>
+    <span class="mq-i">Intervalo Aplicado™</span>
+    <span class="mq-i">Ciência das Pausas Sensoriais</span>
+    <span class="mq-i">Ativos Botânicos Puros</span>
+    <span class="mq-i">Regulamentado pela ANVISA</span>
+    <span class="mq-i">Protocolo NeuroJoy®</span>
+    <span class="mq-i">Fricção Comportamental</span>
+    <span class="mq-i">Intervalo Aplicado™</span>
+  </div>
+</div>
+
+<!-- ══════════════════ PAIN ══════════════════ -->
+<section id="pain">
+  <div class="pain-header">
+    <div class="sec-label fade">O que está decidindo por você</div>
+    <h2 class="display reveal" style="margin-top:16px">Pequenos impulsos.<br><em>Grandes consequências.</em></h2>
+  </div>
+  <div class="pain-row"><span class="p-emoji">🍔</span><h3 class="p-title">Comer no impulso</h3><p class="p-desc">Não é fome — é um circuito automático ativado antes que você perceba. O piloto automático decide, não você.</p><span class="p-arrow">→</span></div>
+  <div class="pain-row"><span class="p-emoji">🚬</span><h3 class="p-title">Fumar de novo</h3><p class="p-desc">A nicotina foi embora. O hábito neural permaneceu. Força de vontade não desfaz circuito neural — nunca funcionou assim.</p><span class="p-arrow">→</span></div>
+  <div class="pain-row"><span class="p-emoji">📱</span><h3 class="p-title">Perder horas em telas</h3><p class="p-desc">Dopamina sequestrada por design intencional. Engenheiros de atenção criaram esse loop para ser irresistível.</p><span class="p-arrow">→</span></div>
+  <div class="pain-row"><span class="p-emoji">😤</span><h3 class="p-title">Reagir e se arrepender</h3><p class="p-desc">A amígdala disparou antes do córtex pré-frontal acordar. O estrago vem antes da reflexão chegar.</p><span class="p-arrow">→</span></div>
+  <div class="pain-row"><span class="p-emoji">🧊</span><h3 class="p-title">Paralisar na ansiedade</h3><p class="p-desc">Não é preguiça. É a esquiva automática — tão poderosa quanto qualquer dependência química.</p><span class="p-arrow">→</span></div>
+  <div class="pain-row"><span class="p-emoji">🎰</span><h3 class="p-title">Ceder às apostas</h3><p class="p-desc">A urgência impulsiva abre uma janela de 1 segundo — e fecha antes que você pense.</p><span class="p-arrow">→</span></div>
+  <div class="pain-row"><span class="p-emoji">👦</span><h3 class="p-title">Adolescente fora de controle</h3><p class="p-desc">Tela 8h por dia, raiva à flor da pele, impulsividade sem freio. Não é fase — é ausência de ferramenta. E a Escapepen pode ser usada a partir dos 12 anos.</p><span class="p-arrow">→</span></div>
+</section>
+
+<!-- ══════════════════ FRANKL ══════════════════ -->
+<section id="frankl">
+  <div class="frankl-inner">
+    <span class="frankl-pre fade">A base filosófica · Viktor Frankl</span>
+    <blockquote class="frankl-quote">
+      <span class="fq-line">"Entre o estímulo e a resposta</span>
+      <span class="fq-line">existe um espaço. Nesse espaço</span>
+      <span class="fq-line">reside a nossa <em>liberdade.</em>"</span>
+    </blockquote>
+    <div class="frankl-rule"></div>
+    <p class="frankl-attr fade">Viktor E. Frankl · Psiquiatra · "O Homem em Busca de Sentido"</p>
+  </div>
+</section>
+
+<!-- ══════════════════ NOT ══════════════════ -->
+<section id="notis">
+  <div class="not-left">
+    <div class="sec-label fade">Clareza antes de tudo</div>
+    <h2 class="display fade" style="margin-top:20px;margin-bottom:24px">O que a<br>Escapepen<br><em>não é.</em></h2>
+    <p class="body-text fade">A Escapepen opera em um espaço de mercado único — e é importante demarcar esse território com precisão. Ela não compete com medicamentos, suplementos ou apps. Ela cria uma categoria própria.</p>
+  </div>
+  <div class="not-right">
+    <div class="not-item fade" style="transition-delay:.0s">
+      <div class="not-x">✕</div>
+      <div><h4>Não é um Vape</h4><p>Sem combustão, aquecimento ou inalação de vapor para os pulmões. Uso exclusivamente aromático e olfativo.</p></div>
+    </div>
+    <div class="not-item fade" style="transition-delay:.08s">
+      <div class="not-x">✕</div>
+      <div><h4>Não tem Nicotina</h4><p>Livre de substâncias viciantes ou controladas. Compostos 100% botânicos e naturais, sem dependência.</p></div>
+    </div>
+    <div class="not-item fade" style="transition-delay:.16s">
+      <div class="not-x">✕</div>
+      <div><h4>Não é Medicamento</h4><p>Não diagnostica, não trata e não cura patologias. É um cosmético aromático regularizado pela ANVISA.</p></div>
+    </div>
+    <div class="not-item fade" style="transition-delay:.24s">
+      <div class="not-x">✕</div>
+      <div><h4>Não é "Pílula Mágica"</h4><p>Não altera o que você sente — fornece o tempo psicológico necessário para que você processe e escolha.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ MECHANISM ══════════════════ -->
+<section id="mech" class="sec">
+  <div class="sec-label fade">Fricção comportamental e via olfativa</div>
+  <h2 class="display fade" style="margin-top:16px;margin-bottom:16px">O mecanismo<br><em>do intervalo.</em></h2>
+  <p class="body-text fade">O ato tátil de abrir a caneta + a inalação criam uma sequência de 3 a 8 segundos que recruta o córtex pré-frontal antes da resposta automática. Isso é o Intervalo Aplicado™.</p>
+  <div class="mech-grid">
+    <div class="mech-steps fade">
+      <div class="mech-step">
+        <div class="mech-n">1</div>
+        <div>
+          <h4>Ação Biomecânica</h4>
+          <p>O gesto tátil de pegar e abrir a caneta age como um "disjuntor" — interrompendo mecanicamente o engajamento motor automático antes que a ação compulsiva ocorra.</p>
+        </div>
+      </div>
+      <div class="mech-step">
+        <div class="mech-n">2</div>
+        <div>
+          <h4>Via Olfativa Rápida</h4>
+          <p>O aroma acessa instantaneamente o sistema límbico — centro das emoções — através da via olfativa, modulando o estado de alerta e competindo pela atenção cerebral.</p>
+        </div>
+      </div>
+      <div class="mech-step">
+        <div class="mech-n">3</div>
+        <div>
+          <h4>Intervalo Aplicado™</h4>
+          <p>Cria uma janela de 3 a 8 segundos de latência consciente. Tempo suficiente para o córtex pré-frontal (sistema deliberativo) ser recrutado antes da descarga impulsiva.</p>
+        </div>
+      </div>
+      <div class="mech-step">
+        <div class="mech-n">4</div>
+        <div>
+          <h4>Escolha Deliberativa</h4>
+          <p>Com o tempo reorganizado e o pico emocional dissipado, você executa uma resposta consciente. Fechar a caneta sela o ciclo — consolidando neuroplasticamente o novo hábito.</p>
+        </div>
+      </div>
+    </div>
+    <div class="mech-visual fade">
+      <div class="flow-box">
+        <div class="flow-title">Sem Escapepen — Automatismo</div>
+        <div class="flow-row">
+          <div class="flow-pill">Estímulo</div>
+          <div class="flow-arrow">⚡</div>
+          <div class="flow-pill" style="border-color:rgba(192,57,43,.25);color:#C0392B;background:rgba(192,57,43,.04)">Reação Automática</div>
+        </div>
+        <div class="flow-sep"></div>
+        <div class="flow-title">Com Escapepen — Intervalo Aplicado™</div>
+        <div class="flow-row">
+          <div class="flow-pill">Estímulo</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-pill accent">Pausa 3–8s</div>
+        </div>
+        <div style="height:14px;border-left:.5px dashed rgba(26,95,168,.25);margin-left:calc(50% - 1px)"></div>
+        <div class="flow-row" style="margin-bottom:0">
+          <div style="flex:1"></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-pill good">Escolha Consciente</div>
+        </div>
+      </div>
+      <div class="insight-box">
+        <p>"A Escapepen não suprime o impulso. Ela redistribui sua energia ao longo do tempo — transformando uma explosão comportamental em uma resposta estruturada."</p>
+        <cite>Framework Comportamental NeuroJoy®</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FORMULA ══════════════════ -->
+<section id="formula" class="sec">
+  <div class="form-intro">
+    <div>
+      <div class="sec-label fade">Compostos botânicos</div>
+      <h2 class="display reveal" style="margin-top:16px">A Fórmula<br><em>NeuroJoy®.</em></h2>
+    </div>
+    <p class="form-body fade">Cinco ativos botânicos selecionados para agir em sinergia no sistema límbico. Nenhuma substância sintética, estimulante artificial ou composto viciante.</p>
+  </div>
+  <div class="form-grid">
+    <div class="form-card fade" style="transition-delay:.0s">
+      <span class="form-ic">🌿</span>
+      <div class="form-name">Rhodiola rosea &amp;<br>Avena sativa</div>
+      <div class="form-action">Equilíbrio e relaxamento</div>
+      <p class="form-desc">Adaptógenos que regulam a resposta ao estresse e promovem estabilidade emocional progressiva.</p>
+    </div>
+    <div class="form-card fade" style="transition-delay:.07s">
+      <span class="form-ic">🫘</span>
+      <div class="form-name">Mucuna pruriens</div>
+      <div class="form-action">Motivação e vitalidade</div>
+      <p class="form-desc">Precursora natural de dopamina. Apoia a motivação sem estimulantes artificiais ou dependência.</p>
+    </div>
+    <div class="form-card fade" style="transition-delay:.14s">
+      <span class="form-ic">🌸</span>
+      <div class="form-name">Calêndula &amp;<br>Vetiver</div>
+      <div class="form-action">Ação calmante e estabilidade</div>
+      <p class="form-desc">Compostos olfativos com ação reconhecida na modulação do sistema nervoso autônomo.</p>
+    </div>
+    <div class="form-card fade" style="transition-delay:.21s">
+      <span class="form-ic">🫒</span>
+      <div class="form-name">Pimenta-Preta &amp;<br>Laranja Doce</div>
+      <div class="form-action">Foco, disposição e conforto</div>
+      <p class="form-desc">Estimulam a atenção e criam um estímulo sensorial distinto para ancorar o Intervalo Aplicado™.</p>
+    </div>
+    <div class="form-card fade" style="transition-delay:.28s">
+      <span class="form-ic">🥥</span>
+      <div class="form-name">Óleo de Coco</div>
+      <div class="form-action">Veículo de absorção protetor</div>
+      <p class="form-desc">Base natural que potencializa a liberação aromática e preserva a integridade dos compostos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ HOW ══════════════════ -->
+<section id="how" class="sec">
+  <div class="sec-label fade">O ritual de uso</div>
+  <h2 class="display reveal" style="margin-top:16px">Três gestos.<br><em>Um intervalo.</em></h2>
+  <div class="how-steps">
+    <div class="how-s fade" style="transition-delay:.0s">
+      <span class="how-ic">📦</span>
+      <span class="how-num">Passo 01</span>
+      <h3>Abra a caixa</h3>
+      <p>Retire sua Escapepen. Ela já está pronta — sem configuração, sem ativação, sem espera. Disponível exatamente quando você precisa.</p>
+      <span class="how-tag">Pronta para uso imediato</span>
+    </div>
+    <div class="how-s fade" style="transition-delay:.1s">
+      <span class="how-ic">✍️</span>
+      <span class="how-num">Passo 02</span>
+      <h3>Pressione na tampa</h3>
+      <p>Posicione a ponta na tampa e pressione. O gesto físico cria a primeira fricção comportamental — interrompendo o engajamento motor automático.</p>
+      <span class="how-tag">A fricção intencional</span>
+    </div>
+    <div class="how-s fade" style="transition-delay:.2s">
+      <span class="how-ic">😮‍💨</span>
+      <span class="how-num">Passo 03</span>
+      <h3>Inale e escolha</h3>
+      <p>1 a 3 inalações lentas. 5 segundos de respiração consciente. Com o intervalo instalado e o pico emocional dissipado, tome sua decisão.</p>
+      <span class="how-tag">3 a 8 segundos de liberdade</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ TESTIMONIALS ══════════════════ -->
+<section id="testi" class="sec" style="padding-bottom:0">
+  <div class="sec-label fade">Quem já recuperou o intervalo</div>
+  <h2 class="display reveal" style="margin-top:16px;margin-bottom:72px">A vida depois<br><em>da pausa.</em></h2>
+  <div class="testi-grid">
+    <div class="tc fade" style="transition-delay:.0s">
+      <div class="tc-stars">★★★★★</div>
+      <p class="tc-text">"Fumei por 11 anos. Tentei de tudo. A Escapepen foi a primeira coisa que funcionou no momento certo — quando a vontade bate, não depois."</p>
+      <div class="tc-author">
+        <div class="tc-name">Marcela F.</div>
+        <div class="tc-detail">São Paulo, SP · Ex-fumante há 4 meses</div>
+      </div>
+      <span class="tc-tag">Cigarro</span>
+    </div>
+    <div class="tc fade" style="transition-delay:.1s">
+      <div class="tc-stars">★★★★★</div>
+      <p class="tc-text">"A ansiedade antes das reuniões era paralisante. Com a Escapepen, tenho 8 segundos de clareza que mudam o resultado de tudo."</p>
+      <div class="tc-author">
+        <div class="tc-name">Rafael T.</div>
+        <div class="tc-detail">Curitiba, PR · Gestor comercial</div>
+      </div>
+      <span class="tc-tag">Ansiedade</span>
+    </div>
+    <div class="tc fade" style="transition-delay:.2s">
+      <div class="tc-stars">★★★★★</div>
+      <p class="tc-text">"Meu filho de 16 anos usava o celular compulsivamente — 8h por dia, sem conseguir parar. Em 3 semanas com a Escapepen, ele mesmo percebeu a diferença. Não esperava esse resultado."</p>
+      <div class="tc-author">
+        <div class="tc-name">Paula T.</div>
+        <div class="tc-detail">Santa Catarina · Mãe de adolescente</div>
+      </div>
+      <span class="tc-tag">Adolescente · Telas</span>
+    </div>
+  </div>
+  <div class="testi-grid-2">
+    <div class="tc fade" style="transition-delay:.0s">
+      <div class="tc-stars">★★★★★</div>
+      <p class="tc-text">"Brigava com minha filha toda semana por reações impulsivas. Hoje, quando sinto que vou explodir, uso a Escapepen. Aqueles 5 segundos já salvaram nossa relação."</p>
+      <div class="tc-author">
+        <div class="tc-name">Carlos H.</div>
+        <div class="tc-detail">Florianópolis, SC · Pai de família</div>
+      </div>
+      <span class="tc-tag">Controle emocional</span>
+    </div>
+    <div class="tc fade" style="transition-delay:.1s">
+      <div class="tc-stars">★★★★★</div>
+      <p class="tc-text">"Psicóloga há 8 anos. Comecei a recomendar a pacientes com compulsões leves. O mecanismo de fricção tátil somado ao estímulo olfativo faz sentido clínico completo."</p>
+      <div class="tc-author">
+        <div class="tc-name">Juliana R.</div>
+        <div class="tc-detail">Psicóloga · CRP 06/185342</div>
+      </div>
+      <span class="tc-tag">Indicação profissional</span>
+    </div>
+    <div class="tc fade" style="transition-delay:.2s">
+      <div class="tc-stars">★★★★★</div>
+      <p class="tc-text">"Estava perdendo dinheiro com apostas sem perceber a espiral. A caneta virou meu freio de emergência — discreta, imediata, sem julgamento."</p>
+      <div class="tc-author">
+        <div class="tc-name">Gabriel S.</div>
+        <div class="tc-detail">Porto Alegre, RS · Recuperação há 5 meses</div>
+      </div>
+      <span class="tc-tag">Apostas</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ ANVISA STRIP ══════════════════ -->
+<div class="anvisa-strip fade" style="margin-top:64px">
+  <div class="anvisa-item"><div class="anvisa-dot"></div><strong>ANVISA</strong> Proc. nº 25351046062202575</div>
+  <div class="anvisa-item"><div class="anvisa-dot"></div><strong>Cosmético Aromático</strong> Uso olfativo</div>
+  <div class="anvisa-item"><div class="anvisa-dot"></div><strong>100% Natural</strong> Sem nicotina ou sintéticos</div>
+  <div class="anvisa-item"><div class="anvisa-dot"></div><strong>A partir de 12 anos</strong> Seguro para adolescentes</div>
+  <div class="anvisa-item"><div class="anvisa-dot"></div><strong>CNPJ</strong> 40.235.691/0001-27</div>
+</div>
+
+<!-- ══════════════════ OFFER ══════════════════ -->
+<section id="offer" class="sec">
+  <div class="sec-label fade">Oferta — 25% OFF por tempo limitado</div>
+  <h2 class="display reveal" style="margin-top:16px;margin-bottom:16px">Recupere o seu<br><em>intervalo.</em></h2>
+  <p class="body-text fade" style="margin-bottom:64px">O recurso mais escasso do século XXI não é informação ou produtividade — é o espaço entre o estímulo e a resposta. A Escapepen entrega esse espaço de volta.</p>
+  <div class="offer-grid">
+    <div class="offer-vis">
+      <div class="offer-pen-wrap">
+        <svg width="100" height="380" viewBox="0 0 90 420" fill="none">
+          <rect x="13" y="13" width="64" height="84" rx="3" fill="url(#pg-cap)"/>
+          <rect x="11" y="93" width="68" height="7" rx="1" fill="url(#pg-blue)"/>
+          <rect x="13" y="98" width="64" height="216" rx="2" fill="url(#pg-body)"/>
+          <rect x="22" y="210" width="46" height="20" rx="2.5" fill="url(#pg-gold)"/>
+          <text x="45" y="223" text-anchor="middle" fill="rgba(255,255,255,.95)" font-size="8.5" font-weight="700" font-family="sans-serif">15ml</text>
+          <rect x="30" y="237" width="30" height="16" rx="8" fill="#111"/>
+          <text x="45" y="248" text-anchor="middle" fill="#fff" font-size="8" font-weight="700" font-family="sans-serif" letter-spacing="1.5">GO</text>
+          <rect x="13" y="258" width="64" height="38" rx="1" fill="url(#pg-blue)"/>
+          <text x="45" y="280" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="7" font-family="sans-serif">⊲ 30°C</text>
+          <rect x="13" y="294" width="64" height="62" rx="2" fill="url(#pg-body)"/>
+          <path d="M 20 356 Q 45 356 70 356 L 65 372 Q 45 380 25 372 Z" fill="url(#pg-body)"/>
+          <ellipse cx="45" cy="396" rx="13" ry="6" fill="url(#pg-blue)" opacity=".9"/>
+        </svg>
+      </div>
+      <div class="cd">
+        <div class="cd-u"><span class="cd-n" id="cdh">00</span><span class="cd-l">Horas</span></div>
+        <div class="cd-u"><span class="cd-n" id="cdm">00</span><span class="cd-l">Min</span></div>
+        <div class="cd-u"><span class="cd-n" id="cds">00</span><span class="cd-l">Seg</span></div>
+      </div>
+      <div style="text-align:center">
+        <p style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:6px;font-weight:500">Durabilidade média</p>
+        <p style="font-size:16px;font-weight:600;color:var(--ink);font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400">5 a 6 meses de uso</p>
+        <p style="font-size:12px;color:var(--muted);margin-top:4px">até 20 inalações por dia</p>
+      </div>
+    </div>
+    <div class="offer-details fade">
+      <div>
+        <p class="price-from">De R$ 799,00</p>
+        <div class="price-main">
+          <span class="price-cur">R$</span>
+          <span class="price-int">599</span>
+          <span class="price-dec">,99</span>
+        </div>
+        <p class="price-note">→ 25% aplicado · melhor preço</p>
+      </div>
+      <div class="price-rule"></div>
+      <p class="price-install">ou <strong>12x de R$ 50,00</strong> sem juros no cartão</p>
+      <div class="perks">
+        <div class="perk">1 Escapepen NeuroJoy® original lacrada</div>
+        <div class="perk">Frete grátis para todo o Brasil</div>
+        <div class="perk">Embalagem premium com manual do Protocolo MIA-5™</div>
+        <div class="perk">Suporte via WhatsApp</div>
+        <div class="perk">Aprovado ANVISA · Proc. 25351046062202575</div>
+      </div>
+      <span class="btn-offer" style="opacity:.38;cursor:not-allowed;pointer-events:none;"><span>→ Em breve disponível</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FAQ ══════════════════ -->
+<section id="faq">
+  <div class="faq-left fade">
+    <h2 class="faq-display">Suas<br><em>dúvidas.</em></h2>
+    <p class="faq-sub">Respostas precisas para as perguntas mais frequentes dos nossos clientes.</p>
+    <div class="faq-links">
+      <a href="https://wa.me/5521985220833" target="_blank">→ WhatsApp (21) 9 8522-0833</a>
+      <a href="mailto:contato@pausaconsciente.com.br">→ contato@pausaconsciente.com.br</a>
+      <a href="https://instagram.com/escapepen" target="_blank">→ @escapepen no Instagram</a>
+    </div>
+  </div>
+  <div class="faq-items">
+    <div class="fq"><button class="fq-q">O que é exatamente a Escapepen?<span class="fq-icon">+</span></button><div class="fq-a"><div class="fq-ai">A Escapepen NeuroJoy® é uma caneta inaladora de compostos aromáticos botânicos 100% naturais, classificada como cosmético aromático de uso olfativo pela ANVISA. Ela atua como âncora sensorial — o gesto tátil de abrir + a inalação criam uma micro-pausa de 3 a 8 segundos (Intervalo Aplicado™) que recruta o córtex pré-frontal antes da resposta automática.</div></div></div>
+    <div class="fq"><button class="fq-q">É segura? Tem nicotina ou substâncias controladas?<span class="fq-icon">+</span></button><div class="fq-a"><div class="fq-ai">Não. 100% natural — sem nicotina, sem substâncias controladas, sem estimulantes artificiais. Aprovada pela ANVISA (Proc. nº 25351046062202575) como cosmético aromático de uso olfativo. Pessoas com histórico de alergias a óleos essenciais devem consultar a lista de ingredientes na bula. Não recomendada para gestantes por precaução.</div></div></div>
+    <div class="fq"><button class="fq-q">Para quais situações funciona?<span class="fq-icon">+</span></button><div class="fq-a"><div class="fq-ai">Cigarro e vape, compulsão alimentar, tempo excessivo em telas, reações emocionais impulsivas, procrastinação por ansiedade, jogos e apostas. Qualquer ciclo gatilho → impulso → ação automática pode ser interrompido pelo Intervalo Aplicado™ — desde que haja o reconhecimento do gatilho como primeiro passo.</div></div></div>
+    <div class="fq"><button class="fq-q">Quantas vezes posso usar por dia e quanto dura?<span class="fq-icon">+</span></button><div class="fq-a"><div class="fq-ai">Até 20 inalações por dia. A vida útil média é de 5 a 6 meses de uso regular. A aplicação é exclusivamente aromática e olfativa — não ingerir. Armazenar em local fresco (abaixo de 30°C) e ao abrigo de luz direta.</div></div></div>
+    <div class="fq"><button class="fq-q">É segura para adolescentes a partir de 12 anos?<span class="fq-icon">+</span></button><div class="fq-a"><div class="fq-ai">Sim. A Escapepen pode ser usada a partir dos 12 anos. A fórmula é 100% botânica, sem nicotina, sem substâncias controladas e sem dependência. É uma ferramenta sensorial segura — e especialmente útil para adolescentes com padrões impulsivos como vício em tela, ansiedade e dificuldade de regulação emocional. Para menores de 18 anos, recomendamos o acompanhamento dos responsáveis no início do uso.</div></div></div>
+    <div class="fq"><button class="fq-q">Posso usar junto com terapia ou tratamento médico?<span class="fq-icon">+</span></button><div class="fq-a"><div class="fq-ai">Sim. A Escapepen é um complemento, não substituto. Ela não interfere com medicamentos e pode ser usada como suporte em processos terapêuticos. Vários psicólogos já a recomendam como ferramenta auxiliar de consciência comportamental. Consulte seu profissional de saúde em caso de dúvida.</div></div></div>
+    <div class="fq"><button class="fq-q">Como funciona a entrega?<span class="fq-icon">+</span></button><div class="fq-a"><div class="fq-ai">Entregamos para todo o Brasil com frete gratuito. Prazo médio de 5 a 10 dias úteis conforme a região. Você recebe o código de rastreio por e-mail após o despacho. Em caso de dúvidas, entre em contato pelo e-mail contato@pausaconsciente.com.br ou pelo WhatsApp.</div></div></div>
+  </div>
+</section>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer>
+  <div class="ft-top">
+    <div>
+      <div class="ft-logo">Escapepen<sup>®</sup> NeuroJoy</div>
+      <p style="font-size:11px;color:rgba(255,255,255,.25);margin-bottom:12px;letter-spacing:.04em">pausaconsciente.com.br</p>
+      <p class="ft-desc">Tecnologia Não-Digital de Micro-Pausas Sensoriais Portáteis. Devolvemos o espaço entre o estímulo e a resposta.</p>
+      <p class="ft-legal">
+        KF Comércio e Distribuição de Produtos Farmacêuticos, Importação e Exportação Ltda.<br>
+        CNPJ 40.235.691/0001-27 · ANVISA Proc. nº 25351046062202575<br>
+        Cosmético aromático de uso olfativo — não medicamentoso.
+      </p>
+    </div>
+    <div class="ft-col">
+      <div class="ft-col-h">Navegação</div>
+      <ul>
+        <li><a href="#mech">Mecanismo</a></li>
+        <li><a href="#formula">Fórmula</a></li>
+        <li><a href="#testi">Depoimentos</a></li>
+        <li><a href="#offer">Comprar</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <div class="ft-col-h">Contato</div>
+      <ul>
+        <li><a href="https://wa.me/5521985220833" target="_blank">WhatsApp · (21) 9 8522-0833</a></li>
+        <li><a href="mailto:contato@pausaconsciente.com.br">E-mail</a></li>
+        <li><a href="https://instagram.com/pausaconsciente" target="_blank">Instagram</a></li>
+        <li><a href="https://tiktok.com/@pausaconsciente" target="_blank">TikTok</a></li>
+        <li><a href="https://pausaconsciente.com.br/politica-de-privacidade/" target="_blank">Privacidade</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <p>© 2025 Pausa Consciente · <a href="https://pausaconsciente.com.br" style="color:rgba(255,255,255,.25);text-decoration:none">pausaconsciente.com.br</a> — Todos os direitos reservados.</p>
+    <p class="ft-manifesto">"Não reaja. Respire. Silencie. Escolha."</p>
+  </div>
+</footer>
+
+<script>
+/* HAMBURGER */
+const ham=document.getElementById('ham'),mobMenu=document.getElementById('mobMenu');
+if(ham)ham.addEventListener('click',()=>mobMenu.classList.toggle('open'));
+function closeMobMenu(){mobMenu.classList.remove('open');}
+document.addEventListener('click',e=>{if(!ham.contains(e.target)&&!mobMenu.contains(e.target))mobMenu.classList.remove('open');});
+
+/* CURSOR */
+const cur=document.getElementById('cur'),curR=document.getElementById('curR');
+let mx=-100,my=-100,rx=-100,ry=-100;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function a(){cur.style.left=mx+'px';cur.style.top=my+'px';rx+=(mx-rx)*.09;ry+=(my-ry)*.09;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(a)})();
+
+/* PROGRESS + NAV */
+const prog=document.getElementById('prog'),nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{
+  const p=window.scrollY/(document.body.scrollHeight-window.innerHeight);
+  prog.style.transform=`scaleX(${p})`;
+  nav.classList.toggle('sc',window.scrollY>40);
+},{passive:true});
+
+/* PEN 3D TILT */
+const pw=document.querySelector('#hero .h-right');
+if(pw)document.addEventListener('mousemove',e=>{
+  const r=pw.getBoundingClientRect();
+  if(e.clientX<r.left||e.clientX>r.right)return;
+  const dx=(e.clientX-(r.left+r.width/2))/(r.width/2);
+  const dy=(e.clientY-(r.top+r.height/2))/(r.height/2);
+  document.querySelector('.pen-stage').style.transform=`translateY(0) rotate(-4deg) rotateY(${dx*10}deg) rotateX(${-dy*7}deg)`;
+});
+
+/* MAGNETIC BTNS */
+document.querySelectorAll('.btn-primary,.n-btn').forEach(b=>{
+  b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.28}px,${(e.clientY-r.top-r.height/2)*.28}px)`});
+  b.addEventListener('mouseleave',()=>b.style.transform='');
+});
+
+/* SCROLL OBSERVER */
+const obs=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target);}
+}),{threshold:.08});
+document.querySelectorAll('.reveal,.fade,.fq-line').forEach(el=>obs.observe(el));
+
+/* COUNTDOWN */
+(function(){
+  const end=new Date();end.setHours(23,59,59,0);
+  function t(){const d=end-new Date();
+    if(d<0){end.setDate(end.getDate()+1);return;}
+    const h=Math.floor(d/3600000),m=Math.floor(d%3600000/60000),s=Math.floor(d%60000/1000);
+    document.getElementById('cdh').textContent=String(h).padStart(2,'0');
+    document.getElementById('cdm').textContent=String(m).padStart(2,'0');
+    document.getElementById('cds').textContent=String(s).padStart(2,'0');
+  }
+  t();setInterval(t,1000);
+})();
+
+/* FAQ */
+document.querySelectorAll('.fq-q').forEach(q=>q.addEventListener('click',()=>{
+  const i=q.parentElement,o=i.classList.contains('open');
+  document.querySelectorAll('.fq').forEach(x=>x.classList.remove('open'));
+  if(!o)i.classList.add('open');
+}));
+</script>
+</body>
+</html>
