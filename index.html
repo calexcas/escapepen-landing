@@ -3,9 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Escapepen NeuroJoy® — A Ciência do Intervalo</title>
+<title>Pausa Consciente — Escapepen NeuroJoy®</title>
+<meta name="description" content="A tecnologia de micro-pausas sensoriais que cria 3 a 8 segundos entre o impulso e a ação. 100% natural. Aprovado ANVISA. Até 6 meses de uso.">
+<meta property="og:title" content="Pausa Consciente — Escapepen NeuroJoy®">
+<meta property="og:description" content="Entre o estímulo e a resposta existe um espaço. A Escapepen NeuroJoy® entrega esse espaço de volta para você.">
+<meta property="og:url" content="https://pausaconsciente.com.br">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pausa Consciente — Escapepen NeuroJoy®">
+<meta name="twitter:description" content="Entre o estímulo e a resposta existe um espaço. A Escapepen NeuroJoy® entrega esse espaço de volta para você.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://pausaconsciente.com.br">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
 <style>
 /* ─────────────────────────────────────────────
    TOKENS
@@ -37,7 +47,7 @@ html { scroll-behavior: smooth; font-size: 16px; }
 body {
   background: var(--paper);
   color: var(--ink);
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Instrument Sans', sans-serif;
   font-weight: 300;
   line-height: 1.6;
   overflow-x: hidden;
@@ -196,6 +206,7 @@ nav.sc {
   text-transform: uppercase; text-decoration: none;
   padding: 15px 32px; cursor: none;
   transition: background .25s; position: relative; overflow: hidden;
+  font-family: 'Instrument Sans', sans-serif;
 }
 .btn-primary::after {
   content: ''; position: absolute; inset: 0;
@@ -263,7 +274,7 @@ nav.sc {
    STATS STRIP
 ───────────────────────────────────────────── */
 .stats-strip {
-  display: grid; grid-template-columns: repeat(4,1fr);
+  display: grid; grid-template-columns: repeat(5,1fr);
   border-top: .5px solid var(--rule); border-bottom: .5px solid var(--rule);
   background: var(--surface);
 }
@@ -472,7 +483,7 @@ nav.sc {
   font-family: 'Cormorant Garamond', serif; font-style: italic;
   font-size: 18px; font-weight: 300; color: #fff; line-height: 1.5;
 }
-.insight-box cite { display: block; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-top: 12px; font-style: normal; font-weight: 500; font-family: 'DM Sans', sans-serif; }
+.insight-box cite { display: block; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-top: 12px; font-style: normal; font-weight: 500; font-family: 'Instrument Sans', sans-serif; }
 
 /* ─────────────────────────────────────────────
    FORMULA
@@ -632,6 +643,7 @@ nav.sc {
   font-size: 11px; font-weight: 500; letter-spacing: .18em;
   text-transform: uppercase; text-decoration: none;
   padding: 20px; cursor: none; position: relative; overflow: hidden;
+  font-family: 'Instrument Sans', sans-serif;
 }
 .btn-offer::after {
   content: ''; position: absolute; inset: 0;
@@ -693,7 +705,7 @@ nav.sc {
 .fq:last-child { border-bottom: .5px solid var(--rule); }
 .fq-q {
   width: 100%; background: none; border: none;
-  color: var(--ink); font-family: 'DM Sans', sans-serif;
+  color: var(--ink); font-family: 'Instrument Sans', sans-serif;
   font-size: 15px; font-weight: 500; text-align: left;
   padding: 24px 0; cursor: none;
   display: flex; justify-content: space-between; align-items: center;
@@ -712,7 +724,7 @@ nav.sc {
   padding: 0 0 24px; font-size: 14px; color: var(--muted);
   line-height: 1.8; font-weight: 300;
 }
-.fq.open .fq-a { max-height: 300px; }
+.fq.open .fq-a { max-height: 500px; }
 
 /* ─────────────────────────────────────────────
    FOOTER
@@ -770,11 +782,78 @@ footer {
 .fade.vis { opacity: 1; transform: translateY(0); }
 
 /* ─────────────────────────────────────────────
+   HAMBURGER MENU
+───────────────────────────────────────────── */
+.ham {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: none; padding: 4px; background: none; border: none;
+}
+.ham span {
+  display: block; width: 22px; height: 1.5px;
+  background: var(--ink); transition: all .3s;
+}
+.mob-menu {
+  display: none; position: fixed; top: 64px; left: 0; right: 0;
+  background: rgba(247,245,241,.98); backdrop-filter: blur(20px);
+  border-bottom: .5px solid var(--rule); z-index: 499;
+  padding: 24px 24px 32px; flex-direction: column; gap: 0;
+}
+.mob-menu.open { display: flex; }
+.mob-menu a {
+  font-size: 13px; font-weight: 500; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted);
+  text-decoration: none; padding: 14px 0;
+  border-bottom: .5px solid var(--rule);
+  transition: color .2s;
+}
+.mob-menu a:last-child { border-bottom: none; }
+.mob-menu a:hover { color: var(--blue); }
+
+/* ─────────────────────────────────────────────
+   MOBILE STICKY CTA
+───────────────────────────────────────────── */
+.mob-cta {
+  display: none; position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(247,245,241,.97); backdrop-filter: blur(16px);
+  border-top: .5px solid var(--rule); z-index: 490;
+  padding: 12px 20px 20px;
+}
+.mob-cta a {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--ink); color: #fff;
+  font-size: 11px; font-weight: 600; letter-spacing: .16em;
+  text-transform: uppercase; text-decoration: none;
+  padding: 16px; font-family: 'Instrument Sans', sans-serif;
+}
+
+/* ─────────────────────────────────────────────
+   WHATSAPP FLOAT
+───────────────────────────────────────────── */
+.wa-float {
+  position: fixed; bottom: 96px; right: 24px;
+  width: 52px; height: 52px; border-radius: 50%;
+  background: #25D366; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; z-index: 480; cursor: none;
+  box-shadow: 0 4px 20px rgba(37,211,102,.35);
+  text-decoration: none;
+  transition: transform .2s, box-shadow .2s;
+  animation: waPulse 2.5s ease-in-out infinite;
+}
+.wa-float:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(37,211,102,.45); }
+@keyframes waPulse {
+  0%,100%{ box-shadow: 0 4px 20px rgba(37,211,102,.35); }
+  50%{ box-shadow: 0 4px 28px rgba(37,211,102,.55), 0 0 0 8px rgba(37,211,102,.08); }
+}
+
+/* ─────────────────────────────────────────────
    RESPONSIVE
 ───────────────────────────────────────────── */
 @media (max-width: 1024px) {
   nav { padding: 0 24px; }
   .n-links { display: none; }
+  .n-btn { display: none; }
+  .ham { display: flex; }
   #hero { grid-template-columns: 1fr; min-height: auto; }
   .h-left { padding: 120px 24px 60px; }
   .h-right { display: none; }
@@ -809,6 +888,14 @@ footer {
   footer { padding: 0; }
   .ft-top { grid-template-columns: 1fr; padding: 56px 24px 40px; gap: 36px; }
   .ft-bottom { padding: 18px 24px; flex-direction: column; gap: 6px; text-align: center; }
+  .mob-cta { display: block; }
+  .wa-float { bottom: 88px; }
+}
+
+@media (max-width: 640px) {
+  .stats-strip { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  .frankl-quote { font-size: clamp(24px, 7vw, 40px); }
 }
 </style>
 </head>
@@ -820,7 +907,7 @@ footer {
 
 <!-- ══════════════════ NAV ══════════════════ -->
 <nav id="nav">
-  <div class="n-logo">Escapepen<sup>®</sup> NeuroJoy</div>
+  <a href="https://pausaconsciente.com.br" class="n-logo" style="text-decoration:none">Escapepen<sup>®</sup> NeuroJoy</a>
   <div class="n-c">
     <ul class="n-links">
       <li><a href="#mech">Mecanismo</a></li>
@@ -829,8 +916,27 @@ footer {
       <li><a href="#faq">FAQ</a></li>
     </ul>
     <a href="#offer" class="n-btn">Quero a minha</a>
+    <button class="ham" id="ham" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<div class="mob-menu" id="mobMenu">
+  <a href="#mech" onclick="closeMobMenu()">Mecanismo</a>
+  <a href="#formula" onclick="closeMobMenu()">Fórmula</a>
+  <a href="#testi" onclick="closeMobMenu()">Depoimentos</a>
+  <a href="#faq" onclick="closeMobMenu()">FAQ</a>
+  <a href="#offer" onclick="closeMobMenu()" style="color:var(--blue);font-weight:600">→ Quero a minha</a>
+</div>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/55988155617" class="wa-float" target="_blank" title="Fale conosco no WhatsApp">💬</a>
+
+<!-- MOBILE STICKY CTA -->
+<div class="mob-cta">
+  <a href="#offer">→ Quero Minha Escapepen</a>
+</div>
 
 <!-- ══════════════════ HERO ══════════════════ -->
 <section id="hero">
@@ -954,7 +1060,7 @@ footer {
     <span class="s-sub">verificada</span>
   </div>
   <div class="stat-cell">
-    <span class="s-num">3–4</span>
+    <span class="s-num">5–6</span>
     <span class="s-label">Meses de duração</span>
     <span class="s-sub">até 20 inalações/dia</span>
   </div>
@@ -962,6 +1068,11 @@ footer {
     <span class="s-num">100%</span>
     <span class="s-label">Natural e botânico</span>
     <span class="s-sub">sem nicotina ou sintéticos</span>
+  </div>
+  <div class="stat-cell">
+    <span class="s-num">+12</span>
+    <span class="s-label">Anos de idade</span>
+    <span class="s-sub">seguro para toda a família</span>
   </div>
 </div>
 
@@ -995,6 +1106,7 @@ footer {
   <div class="pain-row"><span class="p-emoji">😤</span><h3 class="p-title">Reagir e se arrepender</h3><p class="p-desc">A amígdala disparou antes do córtex pré-frontal acordar. O estrago vem antes da reflexão chegar.</p><span class="p-arrow">→</span></div>
   <div class="pain-row"><span class="p-emoji">🧊</span><h3 class="p-title">Paralisar na ansiedade</h3><p class="p-desc">Não é preguiça. É a esquiva automática — tão poderosa quanto qualquer dependência química.</p><span class="p-arrow">→</span></div>
   <div class="pain-row"><span class="p-emoji">🎰</span><h3 class="p-title">Ceder às apostas</h3><p class="p-desc">A urgência impulsiva abre uma janela de 1 segundo — e fecha antes que você pense.</p><span class="p-arrow">→</span></div>
+  <div class="pain-row"><span class="p-emoji">👦</span><h3 class="p-title">Adolescente fora de controle</h3><p class="p-desc">Tela 8h por dia, raiva à flor da pele, impulsividade sem freio. Não é fase — é ausência de ferramenta. E a Escapepen pode ser usada a partir dos 12 anos.</p><span class="p-arrow">→</span></div>
 </section>
 
 <!-- ══════════════════ FRANKL ══════════════════ -->
@@ -1201,12 +1313,12 @@ footer {
     </div>
     <div class="tc fade" style="transition-delay:.2s">
       <div class="tc-stars">★★★★★</div>
-      <p class="tc-text">"Compulsão por doce desde adolescente. A Escapepen não me tirou o prazer de comer — me devolveu o poder de escolher quando comer."</p>
+      <p class="tc-text">"Meu filho de 16 anos usava o celular compulsivamente — 8h por dia, sem conseguir parar. Em 3 semanas com a Escapepen, ele mesmo percebeu a diferença. Não esperava esse resultado."</p>
       <div class="tc-author">
-        <div class="tc-name">Ana Luíza M.</div>
-        <div class="tc-detail">Belo Horizonte, MG · Perdeu 8kg</div>
+        <div class="tc-name">Paula T.</div>
+        <div class="tc-detail">Santa Catarina · Mãe de adolescente</div>
       </div>
-      <span class="tc-tag">Alimentação</span>
+      <span class="tc-tag">Adolescente · Telas</span>
     </div>
   </div>
   <div class="testi-grid-2">
@@ -1245,6 +1357,7 @@ footer {
   <div class="anvisa-item"><div class="anvisa-dot"></div><strong>ANVISA</strong> Proc. nº 25351046062202575</div>
   <div class="anvisa-item"><div class="anvisa-dot"></div><strong>Cosmético Aromático</strong> Uso olfativo</div>
   <div class="anvisa-item"><div class="anvisa-dot"></div><strong>100% Natural</strong> Sem nicotina ou sintéticos</div>
+  <div class="anvisa-item"><div class="anvisa-dot"></div><strong>A partir de 12 anos</strong> Seguro para adolescentes</div>
   <div class="anvisa-item"><div class="anvisa-dot"></div><strong>CNPJ</strong> 40.235.691/0001-27</div>
 </div>
 
@@ -1278,18 +1391,18 @@ footer {
       </div>
       <div style="text-align:center">
         <p style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:6px;font-weight:500">Durabilidade média</p>
-        <p style="font-size:16px;font-weight:600;color:var(--ink);font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400">3 a 4 meses de uso</p>
+        <p style="font-size:16px;font-weight:600;color:var(--ink);font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400">5 a 6 meses de uso</p>
         <p style="font-size:12px;color:var(--muted);margin-top:4px">até 20 inalações por dia</p>
       </div>
     </div>
     <div class="offer-details fade">
       <div>
-        <p class="price-from">De R$ 996,00</p>
-        <p class="price-main">R$ 747<small>,00</small></p>
+        <p class="price-from">De R$ 799,00</p>
+        <p class="price-main">R$ 599<small>,99</small></p>
         <p class="price-note">→ 25% aplicado · melhor preço</p>
       </div>
       <div class="price-rule"></div>
-      <p class="price-install">ou <strong>12x de R$ 76,01</strong> sem juros no cartão</p>
+      <p class="price-install">ou <strong>12x de R$ 50,00</strong> sem juros no cartão</p>
       <div class="perks">
         <div class="perk">1 Escapepen NeuroJoy® original lacrada</div>
         <div class="perk">Frete grátis para todo o Brasil</div>
@@ -1298,13 +1411,6 @@ footer {
         <div class="perk">Aprovado ANVISA · Proc. 25351046062202575</div>
       </div>
       <span class="btn-offer" style="opacity:.38;cursor:not-allowed;pointer-events:none;"><span>→ Em breve disponível</span></span>
-      <div class="guarantee">
-        <span class="guar-ic">🛡️</span>
-        <div class="guar-text">
-          <h5>Garantia incondicional de 7 dias</h5>
-          <p>Não gostou? Avise por e-mail dentro de 7 dias do recebimento. Devolvemos 100% do valor. Sem perguntas, sem letras miúdas.</p>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -1316,7 +1422,7 @@ footer {
     <p class="faq-sub">Respostas precisas para as perguntas mais frequentes dos nossos clientes.</p>
     <div class="faq-links">
       <a href="https://wa.me/55988155617" target="_blank">→ WhatsApp (47) 9 8815-5617</a>
-      <a href="mailto:central@escapepen.com.br">→ central@escapepen.com.br</a>
+      <a href="mailto:contato@pausaconsciente.com.br">→ contato@pausaconsciente.com.br</a>
       <a href="https://instagram.com/escapepen" target="_blank">→ @escapepen no Instagram</a>
     </div>
   </div>
@@ -1324,9 +1430,10 @@ footer {
     <div class="fq"><button class="fq-q">O que é exatamente a Escapepen?<span class="fq-icon">+</span></button><div class="fq-a"><div class="fq-ai">A Escapepen NeuroJoy® é uma caneta inaladora de compostos aromáticos botânicos 100% naturais, classificada como cosmético aromático de uso olfativo pela ANVISA. Ela atua como âncora sensorial — o gesto tátil de abrir + a inalação criam uma micro-pausa de 3 a 8 segundos (Intervalo Aplicado™) que recruta o córtex pré-frontal antes da resposta automática.</div></div></div>
     <div class="fq"><button class="fq-q">É segura? Tem nicotina ou substâncias controladas?<span class="fq-icon">+</span></button><div class="fq-a"><div class="fq-ai">Não. 100% natural — sem nicotina, sem substâncias controladas, sem estimulantes artificiais. Aprovada pela ANVISA (Proc. nº 25351046062202575) como cosmético aromático de uso olfativo. Pessoas com histórico de alergias a óleos essenciais devem consultar a lista de ingredientes na bula. Não recomendada para gestantes por precaução.</div></div></div>
     <div class="fq"><button class="fq-q">Para quais situações funciona?<span class="fq-icon">+</span></button><div class="fq-a"><div class="fq-ai">Cigarro e vape, compulsão alimentar, tempo excessivo em telas, reações emocionais impulsivas, procrastinação por ansiedade, jogos e apostas. Qualquer ciclo gatilho → impulso → ação automática pode ser interrompido pelo Intervalo Aplicado™ — desde que haja o reconhecimento do gatilho como primeiro passo.</div></div></div>
-    <div class="fq"><button class="fq-q">Quantas vezes posso usar por dia e quanto dura?<span class="fq-icon">+</span></button><div class="fq-a"><div class="fq-ai">Até 20 inalações por dia. A vida útil média é de 3 a 4 meses de uso regular. A aplicação é exclusivamente aromática e olfativa — não ingerir. Armazenar em local fresco (abaixo de 30°C) e ao abrigo de luz direta.</div></div></div>
+    <div class="fq"><button class="fq-q">Quantas vezes posso usar por dia e quanto dura?<span class="fq-icon">+</span></button><div class="fq-a"><div class="fq-ai">Até 20 inalações por dia. A vida útil média é de 5 a 6 meses de uso regular. A aplicação é exclusivamente aromática e olfativa — não ingerir. Armazenar em local fresco (abaixo de 30°C) e ao abrigo de luz direta.</div></div></div>
+    <div class="fq"><button class="fq-q">É segura para adolescentes a partir de 12 anos?<span class="fq-icon">+</span></button><div class="fq-a"><div class="fq-ai">Sim. A Escapepen pode ser usada a partir dos 12 anos. A fórmula é 100% botânica, sem nicotina, sem substâncias controladas e sem dependência. É uma ferramenta sensorial segura — e especialmente útil para adolescentes com padrões impulsivos como vício em tela, ansiedade e dificuldade de regulação emocional. Para menores de 18 anos, recomendamos o acompanhamento dos responsáveis no início do uso.</div></div></div>
     <div class="fq"><button class="fq-q">Posso usar junto com terapia ou tratamento médico?<span class="fq-icon">+</span></button><div class="fq-a"><div class="fq-ai">Sim. A Escapepen é um complemento, não substituto. Ela não interfere com medicamentos e pode ser usada como suporte em processos terapêuticos. Vários psicólogos já a recomendam como ferramenta auxiliar de consciência comportamental. Consulte seu profissional de saúde em caso de dúvida.</div></div></div>
-    <div class="fq"><button class="fq-q">Como funciona a entrega? E a garantia?<span class="fq-icon">+</span></button><div class="fq-a"><div class="fq-ai">Entregamos para todo o Brasil com frete gratuito. Prazo médio de 5 a 10 dias úteis conforme a região. Você recebe o código de rastreio por e-mail após o despacho. A garantia é incondicional de 7 dias: se sentir que não é para você, avise em central@escapepen.com.br dentro de 7 dias do recebimento e devolvemos 100% do valor pago. Sem perguntas.</div></div></div>
+    <div class="fq"><button class="fq-q">Como funciona a entrega?<span class="fq-icon">+</span></button><div class="fq-a"><div class="fq-ai">Entregamos para todo o Brasil com frete gratuito. Prazo médio de 5 a 10 dias úteis conforme a região. Você recebe o código de rastreio por e-mail após o despacho. Em caso de dúvidas, entre em contato pelo e-mail contato@pausaconsciente.com.br ou pelo WhatsApp.</div></div></div>
   </div>
 </section>
 
@@ -1335,6 +1442,7 @@ footer {
   <div class="ft-top">
     <div>
       <div class="ft-logo">Escapepen<sup>®</sup> NeuroJoy</div>
+      <p style="font-size:11px;color:rgba(255,255,255,.25);margin-bottom:12px;letter-spacing:.04em">pausaconsciente.com.br</p>
       <p class="ft-desc">Tecnologia Não-Digital de Micro-Pausas Sensoriais Portáteis. Devolvemos o espaço entre o estímulo e a resposta.</p>
       <p class="ft-legal">
         KF Comércio e Distribuição de Produtos Farmacêuticos, Importação e Exportação Ltda.<br>
@@ -1356,20 +1464,26 @@ footer {
       <div class="ft-col-h">Contato</div>
       <ul>
         <li><a href="https://wa.me/55988155617" target="_blank">WhatsApp</a></li>
-        <li><a href="mailto:central@escapepen.com.br">E-mail</a></li>
-        <li><a href="https://instagram.com/escapepen" target="_blank">Instagram</a></li>
-        <li><a href="https://tiktok.com/@escapepen" target="_blank">TikTok</a></li>
-        <li><a href="https://escapepen.com.br/politica-de-privacidade/" target="_blank">Privacidade</a></li>
+        <li><a href="mailto:contato@pausaconsciente.com.br">E-mail</a></li>
+        <li><a href="https://instagram.com/pausaconsciente" target="_blank">Instagram</a></li>
+        <li><a href="https://tiktok.com/@pausaconsciente" target="_blank">TikTok</a></li>
+        <li><a href="https://pausaconsciente.com.br/politica-de-privacidade/" target="_blank">Privacidade</a></li>
       </ul>
     </div>
   </div>
   <div class="ft-bottom">
-    <p>© 2025 Escapepen® NeuroJoy — Todos os direitos reservados.</p>
+    <p>© 2025 Pausa Consciente · <a href="https://pausaconsciente.com.br" style="color:rgba(255,255,255,.25);text-decoration:none">pausaconsciente.com.br</a> — Todos os direitos reservados.</p>
     <p class="ft-manifesto">"Não reaja. Respire. Silencie. Escolha."</p>
   </div>
 </footer>
 
 <script>
+/* HAMBURGER */
+const ham=document.getElementById('ham'),mobMenu=document.getElementById('mobMenu');
+if(ham)ham.addEventListener('click',()=>mobMenu.classList.toggle('open'));
+function closeMobMenu(){mobMenu.classList.remove('open');}
+document.addEventListener('click',e=>{if(!ham.contains(e.target)&&!mobMenu.contains(e.target))mobMenu.classList.remove('open');});
+
 /* CURSOR */
 const cur=document.getElementById('cur'),curR=document.getElementById('curR');
 let mx=-100,my=-100,rx=-100,ry=-100;
