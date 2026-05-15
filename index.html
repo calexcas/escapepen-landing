@@ -18,7 +18,7 @@
     }
 
     // Novo visitante: sorteia 50/50
-    var version = Math.random() < 0.5 ? '/premium' : '/dark';
+    var version = Math.random() < 0.5 ? '/premium.html' : '/dark.html';
 
     // Salva para manter consistência em visitas futuras
     localStorage.setItem('lp_version', version);
@@ -27,7 +27,7 @@
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       event: 'ab_test_assignment',
-      lp_version: version === '/premium' ? 'A_premium' : 'B_dark'
+      lp_version: version === '/premium.html' ? 'A_premium' : 'B_dark'
     });
 
     window.location.replace(version);
