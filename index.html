@@ -619,11 +619,24 @@ nav.sc {
 .offer-details { padding: 64px; display: flex; flex-direction: column; justify-content: center; gap: 28px; }
 .price-from { font-size: 14px; color: var(--faint); text-decoration: line-through; letter-spacing: .02em; }
 .price-main {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 80px; font-weight: 300; color: var(--ink);
-  line-height: 1; letter-spacing: -.02em;
+  display: flex; align-items: flex-start;
+  line-height: 1; gap: 2px;
 }
-.price-main small { font-size: 36px; color: var(--muted); }
+.price-cur {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px; font-weight: 300; color: var(--ink);
+  margin-top: 10px; letter-spacing: -.01em;
+}
+.price-int {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 96px; font-weight: 300; color: var(--ink);
+  letter-spacing: -.03em; line-height: .9;
+}
+.price-dec {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px; font-weight: 300; color: var(--muted);
+  margin-top: 10px; letter-spacing: -.01em;
+}
 .price-note { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--blue); font-weight: 500; }
 .price-rule { height: .5px; background: var(--rule); }
 .price-install { font-size: 15px; color: var(--muted); font-weight: 300; }
@@ -1398,7 +1411,11 @@ footer {
     <div class="offer-details fade">
       <div>
         <p class="price-from">De R$ 799,00</p>
-        <p class="price-main">R$ 599<small>,99</small></p>
+        <div class="price-main">
+          <span class="price-cur">R$</span>
+          <span class="price-int">599</span>
+          <span class="price-dec">,99</span>
+        </div>
         <p class="price-note">→ 25% aplicado · melhor preço</p>
       </div>
       <div class="price-rule"></div>
