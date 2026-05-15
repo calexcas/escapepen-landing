@@ -618,24 +618,26 @@ nav.sc {
 
 .offer-details { padding: 64px; display: flex; flex-direction: column; justify-content: center; gap: 28px; }
 .price-from { font-size: 14px; color: var(--faint); text-decoration: line-through; letter-spacing: .02em; }
-.price-main { line-height: 1; display: block; letter-spacing: -.02em; }
+.price-main {
+  display: flex;
+  align-items: flex-end;
+  line-height: 1;
+  gap: 3px;
+}
 .price-cur {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 22px; font-weight: 300; color: var(--ink);
-  display: inline-block; vertical-align: top;
-  padding-top: 14px;
+  font-size: 20px; font-weight: 300; color: var(--ink);
+  padding-bottom: 10px;
 }
 .price-int {
   font-family: 'Cormorant Garamond', serif;
   font-size: 96px; font-weight: 300; color: var(--ink);
-  display: inline-block; vertical-align: top;
-  line-height: 1;
+  letter-spacing: -.03em; line-height: 1;
 }
 .price-dec {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 22px; font-weight: 300; color: var(--muted);
-  display: inline-block; vertical-align: top;
-  padding-top: 14px;
+  font-size: 20px; font-weight: 300; color: var(--muted);
+  padding-bottom: 10px;
 }
 .price-note { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--blue); font-weight: 500; }
 .price-rule { height: .5px; background: var(--rule); }
@@ -863,6 +865,10 @@ footer {
    RESPONSIVE
 ───────────────────────────────────────────── */
 @media (max-width: 1024px) {
+  :root {
+    --rule: rgba(10,25,40,.18);
+    --rule-b: rgba(26,95,168,.22);
+  }
   nav { padding: 0 24px; }
   .n-links { display: none; }
   .n-btn { display: none; }
